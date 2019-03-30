@@ -13,7 +13,7 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
 5. Amar los principios SOLID
 
 ### Pruebas de Software
-- Atividades que forman parte del proceso de desarrollo de software
+- Actividades que forman parte del proceso de desarrollo de software
 - Aseguran que la aplicación funcione correctamente
 - Proporcionan información sobre la calida del producto
 
@@ -25,4 +25,16 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
 - No funcionales
   - Ayudan a conocer que riesgos puede correr el producto en un futuro
   - Nos permiten saber si el producto tiene un mal desempeño o un bajo rendimiento en entornos de producción
-  - 
+
+#### Tipos de pruebas funcionales
+- Pruebas unitarias
+- Pruebas de regresión
+- Pruebas de integración
+- Pruebas de humo
+- Pruebas de aceptación
+
+#### Tipos de pruebas no funcionales
+- Pruebas de compatibilidad
+- Pruebas de rendimiento
+- Pruebas de usabilidad
+- Pruebas de seguridad
