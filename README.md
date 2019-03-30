@@ -2,13 +2,27 @@
 
 ## Bienvenidos al seminario "Testing Like Ninjas"
 
-Este seminario, esta orientado para el desarrollo de pruebas utilizando el lenguaje C# para la plataforma .NET Core de Microsoft, pero la idea general es común para cualquier otro lenguaje, como Python, Java, Javascript... y un largo etc.
+Este seminario, esta orientado para el desarrollo de pruebas funcionales utilizando el lenguaje C# para la plataforma .NET Core de Microsoft, pero la idea general es común para cualquier otro lenguaje, como Python, Java, Javascript... y un largo etc.
 
 ### Objetivos
 
-1. Aprender la importancia de la fase de testing
+1. Aprender la importancia de las pruebas de software
 2. Indagar en los diferentes tipos de pruebas
 3. Conocer los Frameworks mas comunes para pruebas
 4. El Mocking y la Inyección de Dependencia
 5. Amar los principios SOLID
 
+### Pruebas de Software
+- Atividades que forman parte del proceso de desarrollo de software
+- Aseguran que la aplicación funcione correctamente
+- Proporcionan información sobre la calida del producto
+
+### Tipos de pruebas
+- Funcionales
+   - Comprueban que el producto funcione acorde a los requisitos funcionales
+   - Detectan posibles errores durante la fase de desarrollo
+   - La gran mayoría son automatizadas
+- No funcionales
+  - Ayudan a conocer que riesgos puede correr el producto en un futuro
+  - Nos permiten saber si el producto tiene un mal desempeño o un bajo rendimiento en entornos de producción
+  - 
