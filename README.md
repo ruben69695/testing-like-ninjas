@@ -39,12 +39,12 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
 - Pruebas de usabilidad
 - Pruebas de seguridad
 
-#### Pruebas unitarias
+### Pruebas unitarias
 - Centradas en probar únicamente funcionalidades concretas del programa cómo métodos o funciones
 - Nos aseguran que el código principal está funcionando como esperábamos
 ![UNIT TEST EXAMPLE](https://xvnliw.bl.files.1drv.com/y4m_f54RzXyv2EBX0QdFjrLdHSZhBrZ4zAfaTJTpGehr3732gyILfhDhairVqgZRRnpWyZ6zACbWwcLYw6IxmVujYDw_AwSWy8PGIry1f_P9P1nhyPsQ2ceOcolGPU2-qP3OYfBhPzovfyAU95oEweSsCErppRneRSFo1lsp0UMYDZ_h_9ujY9VmbBCxJEpsuiJXFiaFzhy9DS4p3aSVX7ofw?width=660&height=496&cropmode=none)
 
-  ##### Requisitos
+  #### Requisitos
   - Automatizable
   - Repetibles
   - Completas
@@ -52,20 +52,20 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
   - Profesionales
   - Rápidas de crear
 
-  ##### Ventajas
+  #### Ventajas
   - Fomentan la refactorización
   - Simplifican las pruebas de integración
   - Documentan el código
   - Nos permiten programar dependiendo de abstracciones y no de implementaciones
   - Los errores son mas fáciles de localizar
 
-  ##### Frameworks
+  #### Frameworks
   Para .NET en general tenemos disponibles una gran variedad de Frameworks que nos ayudarán a poder crear proyectos de pruebas unitarias para nuestro producto, cómo:
   - MSTest
   - **NUnit**
   - xUnit
 
-  ##### Mocking
+  #### Mocking
   Nos permite poder simular el funcionamiento de objetos complejos en la clase que estamos probando. 
   Algunos ejemplos:
   - Acceso a recursos
@@ -124,10 +124,8 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
     }
   ```
 
-
-
-  ##### Herramientas de mocking
-  En .NET tenemos disponibles un conjunto de frameworks para realizar mocks o fake objects, son los siguientes:
+  #### Herramientas de mocking
+  En .NET tenemos disponibles un conjunto de frameworks para realizar mocks (Fake object implementations), son los siguientes:
   - **NSubstitute**
   - Moq4
   - Rhino Mocks
