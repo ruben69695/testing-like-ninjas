@@ -65,6 +65,67 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
   - **NUnit**
   - xUnit
 
+  ##### Mocking
+  Nos permite poder simular el funcionamiento de objetos complejos en la clase que estamos probando. 
+  Algunos ejemplos:
+  - Acceso a recursos
+  - Acceso a base de datos
+  - Acceso a red o Internet
+  - Lógica de negocio
+  - Interacción con el sistema
+
+  ![Bad Practice](https://tfazjg.bl.files.1drv.com/y4mQRrxxfbSA7iKtmQUTDbXP5flPn8XVFzgF_qSo1HA1ckRi95UhulMjxq-7LponABdmDx9I3uXXluANooAd1wsKDkxlH5oJnQygjgjaEMeu-6dbF9mQHKU86a3uALRLPCEddftEZx-GoLAaTGKIFGBQaFnSb5GVJs1KJQH4NT1SDg5e8ImNXLkMLgcyNPC7miAczi-04PXBf1kyI2EoSjQMg?width=660&height=411&cropmode=none)
+  ```csharp
+    public class StorageData
+    {
+        private readonly DbStorage _storage;
+        public StorageData()
+        {
+            _storage = new DbStorage();
+        }
+    }
+
+    public class DbStorage
+    {
+        public DbStorage() { }
+    }
+  ```
+  ![Good Practice](https://ugxbya.bl.files.1drv.com/y4mRikDDfZwZOVOcKQyHAZClda2GgCjtx08G0KkLc3l5SUEiqrfu21nH9iniCXSzmERSxcYscpwtLbBUAsxG4VIjf1Zxvf5v9PXFbTJ_b2-x9cuCyQA5KtDFXlXICcoE9MmeEIfjqjb-CHNKZI5Kf9CM_amo1RzLuAAZAbmlz25VNJ9s00vfnl0ayTc7KuzxVd-EF-HrPsCWs03qZKE6-Twsg?width=660&height=424&cropmode=none)
+  ```csharp
+    public class StorageData
+    {
+        private readonly IStorage _storage;
+        public StorageData(IStorage storage)
+        {
+            _storage = storage;
+        }
+    }
+
+    public interface IStorage
+    {
+        bool Save(object item);
+        bool Delete(object item);
+    }
+
+    public class DbStorage : IStorage
+    {
+        public bool Save(object item)
+        {
+            // Implementation
+            Console.WriteLine("Save item in the database");
+            return true;
+        }
+        public bool Delete(object item)
+        {
+            // Implementation
+            Console.WriteLine("Delete item from the database");
+            return true;
+        }
+    }
+  ```
+
+
+
   ##### Herramientas de mocking
   En .NET tenemos disponibles un conjunto de frameworks para realizar mocks o fake objects, son los siguientes:
   - **NSubstitute**
@@ -75,3 +136,10 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
 - Verifican el correcto funcionamiento del conjunto de elementos que componen el producto
 - Se realizan después de las pruebas unitarias
 - Nos permiten detectar defectos en las interfaces y en la interacción entre los diferentes componentes integrados
+
+  ##### Requisitos
+  - Automatizable
+  - Completas
+  - Independientes
+  - Profesionales
+  - Fáciles de mantener
