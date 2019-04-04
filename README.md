@@ -58,6 +58,35 @@ Para .NET en general tenemos disponibles una gran variedad de Frameworks que nos
 - **NUnit**
 - xUnit
 
+#### Ejemplo de pruebas con NUnit
+```csharp
+[Test]
+public void LogError_CallMethod_ShouldSetLastErrorProperty()
+{
+    _loggerHelper.LogError("error2");
+    
+    Assert.That(_loggerHelper.LastError, Is.EqualTo("error2"));
+}
+
+[Test]
+public void LogError_CallMethod_ShouldRaiseErrorLoggedEvent()
+{
+    bool eventRaised = false;
+
+    _loggerHelper.ErrorLogged += (sender, guid) => eventRaised = true;
+    _loggerHelper.LogError("error3");
+    
+    Assert.That(eventRaised, Is.True);            
+}
+
+[Test]
+public void LogError_PassEmptyError_ShouldThrowArgumentNullException()
+{
+    Assert.That(() => _loggerHelper.LogError(string.Empty), 
+        Throws.ArgumentNullException);
+}
+```
+
 #### Mocking
 Nos permite poder simular el funcionamiento de objetos complejos en la clase que estamos probando. 
 Algunos ejemplos:
