@@ -75,11 +75,15 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
   - Interacción con el sistema
 
   ##### Bad Practice
-  ![Bad Practice](https://tfazjg.bl.files.1drv.com/y4mQRrxxfbSA7iKtmQUTDbXP5flPn8XVFzgF_qSo1HA1ckRi95UhulMjxq-7LponABdmDx9I3uXXluANooAd1wsKDkxlH5oJnQygjgjaEMeu-6dbF9mQHKU86a3uALRLPCEddftEZx-GoLAaTGKIFGBQaFnSb5GVJs1KJQH4NT1SDg5e8ImNXLkMLgcyNPC7miAczi-04PXBf1kyI2EoSjQMg?width=660&height=411&cropmode=none)
+  ![Bad Practice](https://jzv0ow.bl.files.1drv.com/y4mx-yJJl8vhyInAI8LxmxR9lYSF8_04QwRGKbCJbRknqSxGDGAtHjxw9TRj4FRzioH3TAczk6tEtA_Hk2h__SPa6YPc8rHiXBlXJ05Cy-cPi1cVGHXmPdKUl_Y_CqApycPIEEQLt9itxFXmsyskY9Ty0xbfDIJ9zFgfX9OlDrft4DfGWA0zP6GOoucDokuIl0AZVpdtF28jOuwGh3ZTYiCjg?width=549&height=660&cropmode=none)
+
   > La clase StorageData depende completamente de DbStorage (Una clase de acceso a base de daots), por lo tanto StorageData no se puede probar de forma unitaria.
+
   ##### Good Practice
-  ![Good Practice](https://ugxbya.bl.files.1drv.com/y4mRikDDfZwZOVOcKQyHAZClda2GgCjtx08G0KkLc3l5SUEiqrfu21nH9iniCXSzmERSxcYscpwtLbBUAsxG4VIjf1Zxvf5v9PXFbTJ_b2-x9cuCyQA5KtDFXlXICcoE9MmeEIfjqjb-CHNKZI5Kf9CM_amo1RzLuAAZAbmlz25VNJ9s00vfnl0ayTc7KuzxVd-EF-HrPsCWs03qZKE6-Twsg?width=660&height=424&cropmode=none)
+  ![Good Practice](https://kaoc3g.bl.files.1drv.com/y4mnufzx_kugS50n0ZUifG03iGp3EKRYaIiqNzZcnlhBw48KZEaYzjOhVcVyZ6-rDZE2vDGLvcGuZopYt0yIHilQIFIM319mx7HyXRmshBd20_fACEV7FuA2OxNZM0Wn3myXxjcYNI2ZpULFIL3-7Ql0WViYjfx42NDAqGQBC4WiHdT4eVQ1EGp9NWDUG6C8XmlBSi7njp8HQ2hQFLMKzzqLQ?width=575&height=660&cropmode=none)
+
   > Separando la interfaz de la implementación en la clase DbStorage, podremos simular su funcionamiento mediante mocking. Ahora StorageData es fácil de probar de forma unitaria ya que depende de una abstracción y no de una implementación. 
+
   #### Herramientas de mocking
   En .NET tenemos disponibles un conjunto de frameworks para realizar mocks (Fake object implementations), son los siguientes:
   - **NSubstitute**
