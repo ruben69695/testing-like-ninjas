@@ -34,7 +34,8 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
 ### Pruebas unitarias
 - Centradas en probar únicamente funcionalidades concretas del programa cómo métodos o funciones
 - Nos aseguran que el código principal está funcionando como esperábamos
-![UNIT TEST EXAMPLE](https://xvnliw.bl.files.1drv.com/y4m_f54RzXyv2EBX0QdFjrLdHSZhBrZ4zAfaTJTpGehr3732gyILfhDhairVqgZRRnpWyZ6zACbWwcLYw6IxmVujYDw_AwSWy8PGIry1f_P9P1nhyPsQ2ceOcolGPU2-qP3OYfBhPzovfyAU95oEweSsCErppRneRSFo1lsp0UMYDZ_h_9ujY9VmbBCxJEpsuiJXFiaFzhy9DS4p3aSVX7ofw?width=660&height=496&cropmode=none)
+
+![UNIT TEST EXAMPLE](https://i.ibb.co/6ybZfhb/logger-library-2222.png[)
 
 #### Requisitos
 - Automatizable
@@ -68,7 +69,8 @@ Algunos ejemplos:
 
 ###### Bad Practice
 La clase StorageData depende completamente de DbStorage (Una clase de acceso a base de datos), por lo tanto StorageData no se puede probar de forma unitaria.
-![Bad Practice](https://xvnqiw.bl.files.1drv.com/y4m8u9ZWwtFn7hSLNsrw-LGy5hm6OpOVaYY6E5ZukUPNMvhGdX81RFt930GKxEQeqNXaxvl0ttLPgsoFNqQtr5JXNOsPgcyoJgaU_G98mnU1wRXAAKm5tiD4QF8oupAstCVRXvfu0tOx4_RE9XqS-Tree15x4Ng7hmNaTxhlpfHv86qDwPC81mUYSKp1ds80xDQEe9AAqtucw_oC0ol_oG4rA?width=660&height=237&cropmode=none)
+![Bad Practice](https://i.ibb.co/wcNXMkJ/storage-library-unit-tests-bad-2222.png)
+
 ```csharp
 public class StorageData
 {
@@ -88,7 +90,7 @@ public class DbStorage
 
 ###### Good Practice
 Separando la interfaz de la implementación en la clase DbStorage, podremos simular su funcionamiento mediante mocking. Ahora StorageData es fácil de probar de forma unitaria ya que depende de una abstracción y no de una implementación. 
-![Good Practice](https://w37dga.bl.files.1drv.com/y4mg9sZ2dCgXdm-NV8JEprMttfTjnFIxHf_L_SF_70UJLIBWiR6umNdI8aFFS9nXbhmGcPHyuq51GEW53eydZlB2y7TZsEOxgC-ix7mW-v2y9DMKgT03vqgFPyO2xlKO__lDC1JUIIcs0r4mSVceALMEIlS6hzTo6qi1l9V-5nHhfNSqqfdqzNBjOtZ2xKRMbVd64GJ5dmPYZ5_9_k13di4lQ?width=660&height=175&cropmode=none)
+![Good Practice](https://i.ibb.co/Vpzht7m/storage-library-unit-tests-good-2222.png)
 ```csharp
 public class StorageData
 {
