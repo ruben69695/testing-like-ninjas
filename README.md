@@ -125,21 +125,21 @@ La inyección de dependencia es un patrón de diseño que nos permite poder inye
 - Por propiedad
 - Por método
 
-    ##### Ventajas de inyectar abstracciones
-    - Nuestro código estará menos acoplado
-    - Para las pruebas unitarias nos permitrá poder simular el funcionamiento de estos objetos, creando nuestras propias implementaciónes
-    - Seguiriamos el principio de inversión de la dependencia (SOLI**D**)
-    ##### Ejemplo
-    ```csharp
-    public class StorageData
+##### Ventajas de inyectar abstracciones
+- Nuestro código estará menos acoplado
+- Para las pruebas unitarias nos permitrá poder simular el funcionamiento de estos objetos, creando nuestras propias implementaciónes
+- Seguiriamos el principio de inversión de la dependencia (SOLI**D**)
+##### Ejemplo
+```csharp
+public class StorageData
+{
+    private readonly IStorage _storage;
+    public StorageData(IStorage storage)
     {
-        private readonly IStorage _storage;
-        public StorageData(IStorage storage)
-        {
-            _storage = storage;
-        }
+        _storage = storage;
     }
-    ```
+}
+```
 
 #### Pruebas de integración
 - Verifican el correcto funcionamiento del conjunto de elementos que componen el producto
