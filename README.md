@@ -27,17 +27,9 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
   - Nos permiten saber si el producto tiene un mal desempeño o un bajo rendimiento en entornos de producción
 
 #### Tipos de pruebas funcionales
-- **Pruebas unitarias**
-- **Pruebas de regresión**
-- **Pruebas de integración**
-- Pruebas de humo
-- Pruebas de aceptación
-
-#### Tipos de pruebas no funcionales
-- Pruebas de compatibilidad
-- Pruebas de rendimiento
-- Pruebas de usabilidad
-- Pruebas de seguridad
+- Pruebas unitarias
+- Pruebas de regresión
+- Pruebas de integración
 
 ### Pruebas unitarias
 - Centradas en probar únicamente funcionalidades concretas del programa cómo métodos o funciones
@@ -74,13 +66,13 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
   - Lógica de negocio
   - Interacción con el sistema
 
-    <br />
+  <br />
 
-    :-1: :poop:  **Bad Practice**  :poop: :-1:
-    La clase StorageData depende completamente de DbStorage (Una clase de acceso a base de datos), por lo tanto StorageData no se puede probar de forma unitaria.
-    ![Bad Practice](https://xvnqiw.bl.files.1drv.com/y4m8u9ZWwtFn7hSLNsrw-LGy5hm6OpOVaYY6E5ZukUPNMvhGdX81RFt930GKxEQeqNXaxvl0ttLPgsoFNqQtr5JXNOsPgcyoJgaU_G98mnU1wRXAAKm5tiD4QF8oupAstCVRXvfu0tOx4_RE9XqS-Tree15x4Ng7hmNaTxhlpfHv86qDwPC81mUYSKp1ds80xDQEe9AAqtucw_oC0ol_oG4rA?width=660&height=237&cropmode=none)
+  - [ ]  **Bad Practice**
+  La clase StorageData depende completamente de DbStorage (Una clase de acceso a base de datos), por lo tanto StorageData no se puede probar de forma unitaria.
+  ![Bad Practice](https://xvnqiw.bl.files.1drv.com/y4m8u9ZWwtFn7hSLNsrw-LGy5hm6OpOVaYY6E5ZukUPNMvhGdX81RFt930GKxEQeqNXaxvl0ttLPgsoFNqQtr5JXNOsPgcyoJgaU_G98mnU1wRXAAKm5tiD4QF8oupAstCVRXvfu0tOx4_RE9XqS-Tree15x4Ng7hmNaTxhlpfHv86qDwPC81mUYSKp1ds80xDQEe9AAqtucw_oC0ol_oG4rA?width=660&height=237&cropmode=none)
     ```csharp
-     public class StorageData
+    public class StorageData
     {
         private readonly DbStorage _storage;
 
@@ -96,9 +88,9 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
     }   
     ```
 
-    :thumbsup: :sunglasses: **Good Practice** :sunglasses: :thumbsup:
-    Separando la interfaz de la implementación en la clase DbStorage, podremos simular su funcionamiento mediante mocking. Ahora StorageData es fácil de probar de forma unitaria ya que depende de una abstracción y no de una implementación. 
-    ![Good Practice](https://w37dga.bl.files.1drv.com/y4mg9sZ2dCgXdm-NV8JEprMttfTjnFIxHf_L_SF_70UJLIBWiR6umNdI8aFFS9nXbhmGcPHyuq51GEW53eydZlB2y7TZsEOxgC-ix7mW-v2y9DMKgT03vqgFPyO2xlKO__lDC1JUIIcs0r4mSVceALMEIlS6hzTo6qi1l9V-5nHhfNSqqfdqzNBjOtZ2xKRMbVd64GJ5dmPYZ5_9_k13di4lQ?width=660&height=175&cropmode=none)
+  - [x] **Good Practice**
+  Separando la interfaz de la implementación en la clase DbStorage, podremos simular su funcionamiento mediante mocking. Ahora StorageData es fácil de probar de forma unitaria ya que depende de una abstracción y no de una implementación. 
+  ![Good Practice](https://w37dga.bl.files.1drv.com/y4mg9sZ2dCgXdm-NV8JEprMttfTjnFIxHf_L_SF_70UJLIBWiR6umNdI8aFFS9nXbhmGcPHyuq51GEW53eydZlB2y7TZsEOxgC-ix7mW-v2y9DMKgT03vqgFPyO2xlKO__lDC1JUIIcs0r4mSVceALMEIlS6hzTo6qi1l9V-5nHhfNSqqfdqzNBjOtZ2xKRMbVd64GJ5dmPYZ5_9_k13di4lQ?width=660&height=175&cropmode=none)
     ```csharp
     public class StorageData
     {
