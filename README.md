@@ -142,12 +142,12 @@ public class StorageData
 }
 ```
 
-#### Pruebas de integración
+### Pruebas de integración
 - Verifican el correcto funcionamiento del conjunto de elementos que componen el producto
 - Se realizan después de las pruebas unitarias
 - Nos permiten detectar defectos en las interfaces y en la interacción entre los diferentes componentes integrados
 
-##### Requisitos
+#### Requisitos
 - Automatizable
 - Completas
 - Independientes
