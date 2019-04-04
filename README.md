@@ -74,21 +74,80 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
   - Lógica de negocio
   - Interacción con el sistema
 
-  ##### Bad Practice
-  ![Bad Practice](https://jzv0ow.bl.files.1drv.com/y4mx-yJJl8vhyInAI8LxmxR9lYSF8_04QwRGKbCJbRknqSxGDGAtHjxw9TRj4FRzioH3TAczk6tEtA_Hk2h__SPa6YPc8rHiXBlXJ05Cy-cPi1cVGHXmPdKUl_Y_CqApycPIEEQLt9itxFXmsyskY9Ty0xbfDIJ9zFgfX9OlDrft4DfGWA0zP6GOoucDokuIl0AZVpdtF28jOuwGh3ZTYiCjg?width=549&height=660&cropmode=none)
+    <br />
 
-  > La clase StorageData depende completamente de DbStorage (Una clase de acceso a base de daots), por lo tanto StorageData no se puede probar de forma unitaria.
+    :-1: :poop:  **Bad Practice**  :poop: :-1:
+    La clase StorageData depende completamente de DbStorage (Una clase de acceso a base de datos), por lo tanto StorageData no se puede probar de forma unitaria.
+    ![Bad Practice](https://xvnqiw.bl.files.1drv.com/y4m8u9ZWwtFn7hSLNsrw-LGy5hm6OpOVaYY6E5ZukUPNMvhGdX81RFt930GKxEQeqNXaxvl0ttLPgsoFNqQtr5JXNOsPgcyoJgaU_G98mnU1wRXAAKm5tiD4QF8oupAstCVRXvfu0tOx4_RE9XqS-Tree15x4Ng7hmNaTxhlpfHv86qDwPC81mUYSKp1ds80xDQEe9AAqtucw_oC0ol_oG4rA?width=660&height=237&cropmode=none)
+    ```csharp
+     public class StorageData
+    {
+        private readonly DbStorage _storage;
 
-  ##### Good Practice
-  ![Good Practice](https://kaoc3g.bl.files.1drv.com/y4mnufzx_kugS50n0ZUifG03iGp3EKRYaIiqNzZcnlhBw48KZEaYzjOhVcVyZ6-rDZE2vDGLvcGuZopYt0yIHilQIFIM319mx7HyXRmshBd20_fACEV7FuA2OxNZM0Wn3myXxjcYNI2ZpULFIL3-7Ql0WViYjfx42NDAqGQBC4WiHdT4eVQ1EGp9NWDUG6C8XmlBSi7njp8HQ2hQFLMKzzqLQ?width=575&height=660&cropmode=none)
+        public StorageData()
+        {
+            _storage = new DbStorage();
+        }
+    }
 
-  > Separando la interfaz de la implementación en la clase DbStorage, podremos simular su funcionamiento mediante mocking. Ahora StorageData es fácil de probar de forma unitaria ya que depende de una abstracción y no de una implementación. 
+    public class DbStorage
+    {
+        public bool Save(object item) { /* Access to database */ return true; }
+    }   
+    ```
 
-  #### Herramientas de mocking
-  En .NET tenemos disponibles un conjunto de frameworks para realizar mocks (Fake object implementations), son los siguientes:
-  - **NSubstitute**
-  - Moq4
-  - Rhino Mocks
+    :thumbsup: :sunglasses: **Good Practice** :sunglasses: :thumbsup:
+    Separando la interfaz de la implementación en la clase DbStorage, podremos simular su funcionamiento mediante mocking. Ahora StorageData es fácil de probar de forma unitaria ya que depende de una abstracción y no de una implementación. 
+    ![Good Practice](https://w37dga.bl.files.1drv.com/y4mg9sZ2dCgXdm-NV8JEprMttfTjnFIxHf_L_SF_70UJLIBWiR6umNdI8aFFS9nXbhmGcPHyuq51GEW53eydZlB2y7TZsEOxgC-ix7mW-v2y9DMKgT03vqgFPyO2xlKO__lDC1JUIIcs0r4mSVceALMEIlS6hzTo6qi1l9V-5nHhfNSqqfdqzNBjOtZ2xKRMbVd64GJ5dmPYZ5_9_k13di4lQ?width=660&height=175&cropmode=none)
+    ```csharp
+    public class StorageData
+    {
+        private readonly IStorage _storage;
+        public StorageData(IStorage storage)
+        {
+            _storage = storage;
+        }
+    }
+
+    public interface IStorage
+    {
+        bool Save(object item);
+    }
+
+    public class DbStorage : IStorage
+    {
+        public bool Save(object item) { return true; }
+    }
+    ```
+
+
+   #### Herramientas de mocking
+   En .NET tenemos disponibles un conjunto de frameworks para realizar mocks (Fake object implementations), son los siguientes:
+   - **NSubstitute**
+   - Moq4
+   - Rhino Mocks
+
+   #### Inyección de dependencia
+   La inyección de dependencia es un patrón de diseño que nos permite poder inyectar una dependencia en aquellas clases que las necesiten. Hay distintas formas de inyección:
+   - Por constructor
+   - Por propiedad
+   - Por método
+
+     ##### Ventajas de inyectar abstracciones
+     - Nuestro código estará menos acoplado
+     - Para las pruebas unitarias nos permitrá poder simular el funcionamiento de estos objetos, creando nuestras propias implementaciónes
+     - Seguiriamos el principio de inversión de la dependencia (SOLI**D**)
+     ##### Ejemplo
+     ```csharp
+     public class StorageData
+     {
+         private readonly IStorage _storage;
+         public StorageData(IStorage storage)
+         {
+             _storage = storage;
+         }
+     }
+     ```
 
 #### Pruebas de integración
 - Verifican el correcto funcionamiento del conjunto de elementos que componen el producto
