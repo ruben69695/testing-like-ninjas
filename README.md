@@ -74,7 +74,34 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
   - Lógica de negocio
   - Interacción con el sistema
 
-  ![Bad Practice](https://tfazjg.bl.files.1drv.com/y4mQRrxxfbSA7iKtmQUTDbXP5flPn8XVFzgF_qSo1HA1ckRi95UhulMjxq-7LponABdmDx9I3uXXluANooAd1wsKDkxlH5oJnQygjgjaEMeu-6dbF9mQHKU86a3uALRLPCEddftEZx-GoLAaTGKIFGBQaFnSb5GVJs1KJQH4NT1SDg5e8ImNXLkMLgcyNPC7miAczi-04PXBf1kyI2EoSjQMg?width=660&height=411&cropmode=none)
+<table>
+        <tr>
+            <th>
+                Good Practice
+            </th>
+            <th>
+                Code Example
+            </th>
+        </tr>
+        <tr>
+            <td>
+            <img src="https://tfazjg.bl.files.1drv.com/y4mQRrxxfbSA7iKtmQUTDbXP5flPn8XVFzgF_qSo1HA1ckRi95UhulMjxq-7LponABdmDx9I3uXXluANooAd1wsKDkxlH5oJnQygjgjaEMeu-6dbF9mQHKU86a3uALRLPCEddftEZx-GoLAaTGKIFGBQaFnSb5GVJs1KJQH4NT1SDg5e8ImNXLkMLgcyNPC7miAczi-04PXBf1kyI2EoSjQMg?width=660&height=411&cropmode=none" alt="Bad Practice" />
+            </td>
+            <td>
+                <pre>
+public class StorageData
+{
+    private readonly DbStorage _storage;
+    public StorageData()
+    {
+        _storage = new DbStorage();
+    }
+}
+                </pre>
+            </td>
+        </tr>
+</table>
+
   ```csharp
     public class StorageData
     {
