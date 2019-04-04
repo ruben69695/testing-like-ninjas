@@ -129,6 +129,7 @@ La inyección de dependencia es un patrón de diseño que nos permite poder inye
 - Nuestro código estará menos acoplado
 - Para las pruebas unitarias nos permitrá poder simular el funcionamiento de estos objetos, creando nuestras propias implementaciónes
 - Seguiriamos el principio de inversión de la dependencia (SOLI**D**)
+
 ##### Ejemplo
 ```csharp
 public class StorageData
