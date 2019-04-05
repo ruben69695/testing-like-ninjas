@@ -182,3 +182,77 @@ public class StorageData
 - Independientes
 - Profesionales
 - Fáciles de mantener
+
+### NUnit
+- Framework open source para el desarrollo de pruebas unitarias
+- Nos sirve también para pruebas de integración
+- Fork del conocido framework JUnit de Java
+- Diseñado para TDD (Test Driven Development)
+
+#### Plataformas soportadas
+- .NET Framework 2.0+
+- .NET Standard 1.4+
+- .NET Core
+
+#### Recursos
+- [Repositorio de GitHub](https://github.com/nunit/nunit)
+- [Paquete Nuget](https://www.nuget.org/packages/NUnit)
+- [Documentación](https://github.com/nunit/docs/wiki/NUnit-Documentation)
+
+#### Código
+```csharp
+/* -- Atributo que marca la clase como colección de tests -- */
+[TestFixture] 
+public class MyStackTest
+{
+    private MyStack<string> _stack;
+    
+    /* -- Atributo que marca este método para que se ejecute siempre antes de cada tests  -- */
+    [SetUp] 
+    public void Setup()
+    {
+        _stack = new MyStack<string>();
+    }
+
+    /* Un simple tests */
+    [Test]
+    public void Push_PushAnItem_ReturnStackWithThePushedItem()
+    {
+        var stack = _stack.Push("foo");
+
+        /* Verificación de los resultados del test, lo que identifica si el tests pasa o no */
+        Assert.That(stack.Count, Is.EqualTo(1)); 
+    }
+
+    [Test]
+    public void Push_PushAnItem_SourceStackIsImmutableDueOperation()
+    {
+        _stack.Push("foo");
+        Assert.That(_stack.Count, Is.Zero);
+    }
+
+    [Test]
+    public void Peek_PeekAnItem_ShouldReturnLastItem()
+    {
+        var stack = _stack.Push("foo");
+        stack = stack.Push("bar");
+        Assert.That(stack.Peek(), Is.EqualTo("bar"));
+    }
+
+    [Test]
+    public void Pop_PopOffLastItem_ShouldReturnAnStackWithoutThePoppedItem()
+    {
+        var stack = _stack.Push("foo");
+        stack = stack.Pop();
+        Assert.That(stack.Count, Is.Zero);
+    }
+}
+```
+#### Resultado de ejecución
+```
+Iniciando la ejecución de pruebas, espere...
+
+Total de pruebas: 27. Correctas: 27. Con error: 0. Omitidas: 0.
+La serie de pruebas se ejecutó correctamente.
+Tiempo de ejecución de las pruebas: 1,5129 Segundos
+```
