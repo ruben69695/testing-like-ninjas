@@ -230,22 +230,6 @@ public class MyStackTest
         _stack.Push("foo");
         Assert.That(_stack.Count, Is.Zero);
     }
-
-    [Test]
-    public void Peek_PeekAnItem_ShouldReturnLastItem()
-    {
-        var stack = _stack.Push("foo");
-        stack = stack.Push("bar");
-        Assert.That(stack.Peek(), Is.EqualTo("bar"));
-    }
-
-    [Test]
-    public void Pop_PopOffLastItem_ShouldReturnAnStackWithoutThePoppedItem()
-    {
-        var stack = _stack.Push("foo");
-        stack = stack.Pop();
-        Assert.That(stack.Count, Is.Zero);
-    }
 }
 ```
 #### Resultado de ejecución
@@ -256,3 +240,175 @@ Total de pruebas: 27. Correctas: 27. Con error: 0. Omitidas: 0.
 La serie de pruebas se ejecutó correctamente.
 Tiempo de ejecución de las pruebas: 1,5129 Segundos
 ```
+
+#### Creando el proyecto en .NET Core
+Abrimos terminal e introducimos el siguiente comando para crear la solución
+> dotnet new sln
+
+Creamos un directorio al mismo nivel que la solución
+> /Users/rubenarrebola/Develop/tests
+> .
+> ├── maximo
+> └── tests.sln
+>1 directory, 1 file
+
+Nos situamos en el directorio "maximo" y creamos un proyecto de tipo librería
+> dotnet new classlib
+
+El comando nos creará la siguiente estructura
+>.
+>├── Class1.cs
+>├── maximo.csproj
+>└── obj
+>    ├── maximo.csproj.nuget.cache
+>    ├── maximo.csproj.nuget.g.props
+>    ├── maximo.csproj.nuget.g.targets
+>    └── project.assets.json
+1 directory, 6 files
+
+Renombramos la clase Class1.cs a Maximo.cs y creamos una implementación que haga romper el programa en tiempo de ejecución
+```csharp
+using System;
+using System.Collections.Generic;
+
+namespace maximo
+{
+    public class Maximo
+    {
+        public Maximo()
+        { }
+
+        public int Max(IEnumerable<int> numbers)
+        {
+            throw new NotImplementedException("Ups...");
+        }
+    }
+}
+```
+
+Volvemos al directorio dónde se encuentra la solución y agregamos el proyecto maximo.csproj a la solución
+> dotnet sln add maximo/maximo.csproj
+
+#### Creando el proyecto de pruebas unitarias
+Primero de todo creamos el directorio maximo.Tests. La estructura quedará de la siguiente forma
+> .
+> ├── maximo
+> │   ├── Maximo.cs
+> │   ├── maximo.csproj
+> │   └── obj
+> │       ├── maximo.csproj.nuget.cache
+> │       ├── maximo.csproj.nuget.g.props
+> │       ├── maximo.csproj.nuget.g.targets
+> │       └── project.assets.json
+> ├── maximo.tests
+> └── tests.sln
+> 3 directories, 7 files
+
+Hacemos del directorio maximo.tests nuestro directorio actual y creamos el nuevo proyecto de tests
+> dotnet new nunit
+
+El comando nos creara un proyecto de tests usando NUnit como librería de pruebas.
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="nunit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+  </ItemGroup>
+
+</Project>
+```
+El proyecto de pruebas requiere de otros paquetes para poder correr las pruebas unitarias. "dotnet new" en el paso anterior nos añade SDK de test de Microsoft, el framework de pruebas NUnit y el NUnit test adapter. Ahora tenemos que añadir una referencia entre el proyecto de pruebas y el proyecto maximo, usando el comando "dotnet add reference":
+> dotnet add reference ..maximo/maximo.csproj
+
+La estructura de la solución queda de la siguiente forma:
+> .
+> ├── maximo
+> │   ├── Maximo.cs
+> │   ├── maximo.csproj
+> │   └── obj
+> │       ├── maximo.csproj.nuget.cache
+> │       ├── maximo.csproj.nuget.g.props
+> │       ├── maximo.csproj.nuget.g.targets
+> │       └── project.assets.json
+> ├── maximo.tests
+> │   ├── UnitTest1.cs
+> │   ├── maximo.tests.csproj
+> │   └── obj
+> │       ├── maximo.tests.csproj.nuget.cache
+> │       ├── maximo.tests.csproj.nuget.g.props
+> │       ├── maximo.tests.csproj.nuget.g.targets
+> │       └── project.assets.json
+> └── tests.sln
+> 4 directories, 13 files
+
+Ahora agreguemos a la solución el proyecto de pruebas unitarias que acabamos de crear volviendo al directorio dónde se encuentra la solución
+> dotnet sln add maximo.test/maximo.csproj
+
+#### Creando nuestro primer test
+Vayamos a realizar nuestra primera prueba unitaria, para ello vayamos a nuestro proyecto de tests y cambiemos el nombre de la clase UnitTest1 a MaximoTests.
+Ahora escribamos nuestra clase de tests para testar la clase Maximo. Mas adelante explicaremos cada cosa con mas detalle:
+```csharp
+using System.Collections.Generic;
+using NUnit.Framework;
+using maximo;
+namespace Tests
+{
+    [TestFixture]
+    public class MaximoTests
+    {
+        private Maximo _max;
+
+        [SetUp]
+        public void Setup()
+        {
+            _max = new Maximo();
+        }
+
+        [Test]
+        public void Max_PassList_ShouldReturnTheGreatestNumber()
+        {
+            var list = new List<int>() { 1, 2, 6, 98, 387, 4, 378, 39, 9, 1000, 23 };
+
+            int maxNumber = _max.Max(list);
+
+            Assert.That(maxNumber, Is.EqualTo(1000));
+        }
+    }
+}
+```
+Vamos a explicar un poco la siguiente clase de pruebas unitartias. El atributo **[TestFixture]** indica que la clase contiene pruebas unitarias. El atributo **[Test]** en un método identifica que se trata de un método de prueba.
+
+Una vez guardado vayamos a ejecutar las pruebas para ello utilizaremos el comando **dotnet test** que nos compilara todos los proyectos de la solución y además arrancara las pruebas buscando aquellos proyectos que sean de pruebas y ejecutará las pruebas.
+>dotnet test
+
+Como podemos observar los test fallan, esto es debido a que no tenemos implementación en la clase Maximo. Hagamos que los tests pasen aplicando la correcta implementación en el método Max:
+```csharp
+public int Max(IEnumerable<int> numbers)
+{
+    int max = int.MinValue;
+    foreach (int currentNum in numbers)
+    {
+        if(currentNum > max)
+            max = currentNum;
+    }
+    return max;
+}
+```
+
+Volvamos a pasar las pruebas:
+> dotnet test
+
+Ahora cómo véis las pruebas ya pasan correctamente:
+> Iniciando la ejecución de pruebas, espere...
+>
+>Total de pruebas: 1. Correctas: 1. Con error: 0. Omitidas: 0.
+>La serie de pruebas se ejecutó correctamente.
+>Tiempo de ejecución de las pruebas: 1,2999 Segundos
