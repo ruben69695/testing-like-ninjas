@@ -439,8 +439,8 @@ Tiempo de ejecución de las pruebas: 1,2999 Segundos
 
 Vamos a explicar un poco los atributos de NUnit usados en los ejemplos y otros también se suelen usar:
 
-| Atributo       | Tipo | Descripción
-| ---------------| ---- | -------------
+| Atributo        | Tipo | Descripción
+| --------------- | ---- | -------------
 | TestFixture     | Clase  | Indica que la clase contiene pruebas unitarias 
 | SetUp           | Método | Ejecuta ese método justo antes de la realización de cada uno de los métodos de pruebas
 | Test            | Método | Nos indica que el método es un método de prueba
@@ -448,4 +448,4 @@ Vamos a explicar un poco los atributos de NUnit usados en los ejemplos y otros t
 | OneTimeTearDown | Método | Ejecuta un método una única vez al acabar las pruebas del espacio de nombres
 | SetUpFixture    | Clase  | Marca la clase que contiene los métodos OneTimeSetUp o OneTimeTearDown para todas las pruebas del espacio de nombres
 
-Obviamente hay muchos mas atributos e información [visita la documentación de NUnit](https://github.com/nunit/docs/wiki/Attributes) para saber mas de ello.
+Obviamente hay muchos mas atributos e información, para ello [visita la documentación de NUnit](https://github.com/nunit/docs/wiki/Attributes) sobre todos los atributos.
