@@ -300,7 +300,7 @@ dotnet sln add maximo/maximo.csproj
 ```
 
 #### Creando el proyecto de pruebas unitarias
-Primero de todo creamos el directorio maximo.Tests. La estructura quedará de la siguiente forma
+Primero de todo creamos el directorio maximo.tests. La estructura quedará de la siguiente forma
 ```bash
 .
 ├── maximo
@@ -404,8 +404,6 @@ namespace Tests
     }
 }
 ```
-Vamos a explicar un poco la siguiente clase de pruebas unitartias. El atributo **[TestFixture]** indica que la clase contiene pruebas unitarias. El atributo **[Test]** en un método identifica que se trata de un método de prueba.
-
 Una vez guardado vayamos a ejecutar las pruebas para ello utilizaremos el comando **dotnet test** que nos compilara todos los proyectos de la solución y además arrancara las pruebas buscando aquellos proyectos que sean de pruebas y ejecutará las pruebas.
 ```bash
 dotnet test
@@ -426,11 +424,28 @@ public int Max(IEnumerable<int> numbers)
 ```
 
 Volvamos a pasar las pruebas:
-> dotnet test
+```bash
+dotnet test
+```
 
 Ahora cómo véis las pruebas ya pasan correctamente:
-> Iniciando la ejecución de pruebas, espere...
->
->Total de pruebas: 1. Correctas: 1. Con error: 0. Omitidas: 0.
->La serie de pruebas se ejecutó correctamente.
->Tiempo de ejecución de las pruebas: 1,2999 Segundos
+```bash
+Iniciando la ejecución de pruebas, espere...
+
+Total de pruebas: 1. Correctas: 1. Con error: 0. Omitidas: 0.
+La serie de pruebas se ejecutó correctamente.
+Tiempo de ejecución de las pruebas: 1,2999 Segundos
+```
+
+Vamos a explicar un poco los atributos de NUnit usados en los ejemplos y otros también se suelen usar:
+
+| Atributo       | Tipo | Descripción
+| ---------------| ---- | -------------
+| TestFixture     | Clase  | Indica que la clase contiene pruebas unitarias 
+| SetUp           | Método | Ejecuta ese método justo antes de la realización de cada uno de los métodos de pruebas
+| Test            | Método | Nos indica que el método es un método de prueba
+| OneTimeSetUp    | Método | Ejecuta el método una única vez antes de iniciar las pruebas del espacio de nombres
+| OneTimeTearDown | Método | Ejecuta un método una única vez al acabar las pruebas del espacio de nombres
+| SetUpFixture    | Clase  | Marca la clase que contiene los métodos OneTimeSetUp o OneTimeTearDown para todas las pruebas del espacio de nombres
+
+Obviamente hay muchos mas atributos e información [visita la documentación de NUnit](https://github.com/nunit/docs/wiki/Attributes) para saber mas de ello.
