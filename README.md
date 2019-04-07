@@ -247,7 +247,7 @@ Abrimos terminal e introducimos el siguiente comando para crear la solución
 dotnet new sln 
 ```
 
-Creamos un directorio al mismo nivel que la solución
+Creamos un directorio con nombre "maximo" al mismo nivel que la solución
 ```bash
 /Users/rubenarrebola/Develop/tests
 .
@@ -374,7 +374,7 @@ dotnet sln add maximo.test/maximo.csproj
 
 #### Creando nuestro primer test
 Vayamos a realizar nuestra primera prueba unitaria, para ello vayamos a nuestro proyecto de tests y cambiemos el nombre de la clase UnitTest1 a MaximoTests.
-Ahora escribamos nuestra clase de tests para testar la clase Maximo. Mas adelante explicaremos cada cosa con mas detalle:
+Ahora escribamos nuestra clase de pruebas para probar la clase Maximo. Mas adelante explicaremos cada cosa con mas detalle:
 ```csharp
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -437,6 +437,31 @@ La serie de pruebas se ejecutó correctamente.
 Tiempo de ejecución de las pruebas: 1,2999 Segundos
 ```
 
+Ahora vamos a crear una prueba mas, pero esta va a ser algo diferente. Vamos hacer uso de los casos de prueba para crear múltiples pruebas
+en el mismo método de prueba. Para ello añadimos el siguiente método de prueba en nuestra clase de pruebas:
+```csharp
+[TestCase(new int[] {450, 4, 348}, 450)]
+[TestCase(new int[] {10, 560, 200}, 560)]
+[TestCase(new int[] {90, 1, 249}, 249)]
+public void Max_MethodCall_ShouldReturnTheGreatestNumberInEveryCase(IEnumerable<int> list, int expectedResult)
+{
+    int maxNumber = _max.Max(list);
+
+    Assert.AreEqual(maxNumber, expectedResult);
+} 
+```
+Ahora ejecutemos las pruebas
+```bash
+dotnet test
+...
+
+Iniciando la ejecución de pruebas, espere...
+
+Total de pruebas: 4. Correctas: 4. Con error: 0. Omitidas: 0.
+La serie de pruebas se ejecutó correctamente.
+Tiempo de ejecución de las pruebas: 1,1744 Segundos
+```
+
 Vamos a explicar un poco los atributos de NUnit usados en los ejemplos y otros también se suelen usar:
 
 | Atributo        | Tipo | Descripción
@@ -447,5 +472,6 @@ Vamos a explicar un poco los atributos de NUnit usados en los ejemplos y otros t
 | OneTimeSetUp    | Método | Ejecuta el método una única vez antes de iniciar las pruebas del espacio de nombres
 | OneTimeTearDown | Método | Ejecuta un método una única vez al acabar las pruebas del espacio de nombres
 | SetUpFixture    | Clase  | Marca la clase que contiene los métodos OneTimeSetUp o OneTimeTearDown para todas las pruebas del espacio de nombres
+| TestCase        | Método | Marca un método como prueba a la que se le pueden pasar parámetros, se pueden definir múltiples testcases por método
 
 Obviamente hay muchos mas atributos e información, para ello [visita la documentación de NUnit](https://github.com/nunit/docs/wiki/Attributes) sobre todos los atributos.
