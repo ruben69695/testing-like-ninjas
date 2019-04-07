@@ -485,7 +485,7 @@ Como para la futura implementación usaremos una librería de terceros en el pro
 dotnet add utils/utils.csproj package Microsoft.XmlSerializer.Generator --version 2.1.0-preview3.19128.7
 ```
 
-Además tenemos que añadir una herramienta de .NET Core CLI al proyecto utils, para ello editamos el fichero de proyecto utils.csproj y añadimos lo siguiente debajo del ItemGroup con las referencias a los paquetes:
+Además tenemos que añadir una herramienta de .NET Core CLI al proyecto utils. Para ello editamos el fichero de proyecto utils.csproj y añadimos lo siguiente después de la etiqueta ItemGroup que ya existe y que contiene las referencias a los paquetes Nuget de los que depende nuestro proyecto.
 ```xml
 <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.XmlSerializer.Generator" Version="2.1.0-preview3.19128.7" />
@@ -542,7 +542,7 @@ Ahora ejecutamos los tests
 dotnet test
 ```
 
-Como podemos ver la última prueba que hemos realizado ha fallado, debido a que el método de la clase que estamos testeando no tiene implementación, así que vayamos a implementar su función:
+Como podemos ver la última prueba que hemos realizado ha fallado, debido a que la función de la clase XmlSerializer que estamos testeando no tiene implementación, vamos a implementar lo que tiene que hacer la función:
 ```csharp
 public string Serialize<T>(T item) where T : class
 {
@@ -559,7 +559,7 @@ public string Serialize<T>(T item) where T : class
 }
 ```
 
-Ahora una vez mas, arranquemos los test de nuevo y como podréis ver la prueba que fallaba, ahora funciona
+Ahora una vez mas, arranquemos los test de nuevo y como podréis ver la prueba que era antes incorrecta, ahora es correcta!
 ```bash
 dotnet test
 
@@ -570,7 +570,14 @@ La serie de pruebas se ejecutó correctamente.
 Tiempo de ejecución de las pruebas: 1,1206 Segundos
 ```
 
-Como habéis podido observar hemos realizado las pruebas y las implementaciones de las clases que queriamos probar siguiendo el patrón RED - GREEN - REFACTOR. Este patrón se utiliza en TDD (Test Driven Development) una práctica que consiste en diseñar primero las pruebas y a partir de las pruebas desarrollar el código final haciendo refactorización.
+Como habéis podido observar hemos realizado las pruebas antes que las implementaciones de las clases que queríamos probar. El proceso que hemos realizado ha sido el siguiente:
+1. Hemos creado las clases sin implementación alguna.
+2. Hemos diseñado las pruebas.
+3. Hemos ejecutado las pruebas sabiendo que iban a fallar.
+4. Al ver que fallabán, hemos añadido la correcta implementación en los métodos que estabamos probando.
+5. Hemos vuelto a ejecutar las pruebas hasta que han pasado.
+
+Tal vez no os habréis dado cuenta pero hemos seguido el patrón RED - GREEN - REFACTOR. Este patrón se utiliza en TDD ([Test Driven Development](https://es.wikipedia.org/wiki/Desarrollo_guiado_por_pruebas)) una práctica que consiste en diseñar primero las pruebas y a partir de las pruebas desarrollar el código final haciendo refactorización.
 
 ### Atributos
 Atributos de NUnit usados en los ejemplos y otros también se suelen usar:
