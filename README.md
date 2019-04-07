@@ -242,21 +242,20 @@ Tiempo de ejecución de las pruebas: 1,5129 Segundos
 ```
 
 ## Creando el proyecto en .NET Core con NUnit
-Abrimos terminal e introducimos el siguiente comando para crear la solución
+Abrimos terminal, cremos un directorio para nuestro proyecto, nos situamos en el e introducimos el siguiente comando para crear la solución
 ```bash
 dotnet new sln 
 ```
 
-Creamos un directorio con nombre "maximo" al mismo nivel que la solución
+Creamos un directorio con nombre "utils" al mismo nivel que la solución
 ```bash
-/Users/rubenarrebola/Develop/tests
 .
-├── maximo
-└── tests.sln
+├── utils
+└── testing-example.sln
 1 directory, 1 file
 ```
 
-Nos situamos en el directorio "maximo" y creamos un proyecto de tipo librería
+Nos situamos en el directorio "utils" y creamos un proyecto de tipo librería
 ```bash
 dotnet new classlib
 ```
@@ -265,58 +264,75 @@ El comando nos creará la siguiente estructura
 ```bash
 .
 ├── Class1.cs
-├── maximo.csproj
+├── utils.csproj
 └── obj
-    ├── maximo.csproj.nuget.cache
-    ├── maximo.csproj.nuget.g.props
-    ├── maximo.csproj.nuget.g.targets
+    ├── utils.csproj.nuget.cache
+    ├── utils.csproj.nuget.g.props
+    ├── utils.csproj.nuget.g.targets
     └── project.assets.json
 1 directory, 6 files
 ```
 
-Renombramos la clase Class1.cs a Maximo.cs y creamos una implementación que haga romper el programa en tiempo de ejecución
+Renombramos la clase Class1.cs a JsonSerializer.cs y creamos una implementación que haga romper el programa en tiempo de ejecución
 ```csharp
 using System;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 
-namespace maximo
+namespace utils
 {
-    public class Maximo
+    public class JsonSerializer
     {
-        public Maximo()
-        { }
-
-        public int Max(IEnumerable<int> numbers)
+        public string Serialize<T>(T item) where T : class
         {
-            throw new NotImplementedException("Ups...");
+            throw new NotImplementedException("Not implemented yet...");
         }
     }
 }
 ```
 
-Volvemos al directorio dónde se encuentra la solución y agregamos el proyecto maximo.csproj a la solución
+Como para la futura implementación usaremos una librería de terceros en el proyecto utils para transformar todo a formato json, vamos a añadir el paquete nuget para satisfacer las dependencias:
+```bash
+dotnet add utils/utils.csproj package Newtonsoft.Json
+```
+
+Ahora vamos a crear otra clase en utils, para representar la información básica de un usuario, llamaremos a la clase User.cs
+```csharp
+namespace utils
+{
+    public class User
+    {
+        public string Name { get; set; }
+        public string LastName { get; set; }
+        public int Age { get; set; }
+        public string Email { get; set; }
+    }
+}
+```
+
+Volvemos al directorio dónde se encuentra la solución y agregamos el proyecto utils.csproj a la solución
 ```bash 
-dotnet sln add maximo/maximo.csproj
+dotnet sln add utils/utils.csproj
 ```
 
 ### Creando el proyecto de pruebas unitarias
-Primero de todo creamos el directorio maximo.tests. La estructura quedará de la siguiente forma
+Primero de todo creamos el directorio utils.tests. La estructura quedará de la siguiente forma
 ```bash
 .
-├── maximo
-│   ├── Maximo.cs
-│   ├── maximo.csproj
-│   └── obj
-│       ├── maximo.csproj.nuget.cache
-│       ├── maximo.csproj.nuget.g.props
-│       ├── maximo.csproj.nuget.g.targets
-│       └── project.assets.json
-├── maximo.tests
-└── tests.sln
-3 directories, 7 files
+├── testing-example.sln
+├── utils
+│   ├── JsonSerializer.cs
+│   ├── User.cs
+│   ├── obj
+│   │   ├── project.assets.json
+│   │   ├── utils.csproj.nuget.cache
+│   │   ├── utils.csproj.nuget.g.props
+│   │   └── utils.csproj.nuget.g.targets
+│   └── utils.csproj
+└── utils.tests
+3 directories, 8 files
 ```
 
-Hacemos del directorio maximo.tests nuestro directorio actual y creamos el nuevo proyecto de tests
+Hacemos del directorio utils.tests nuestro directorio actual y creamos el nuevo proyecto de tests
 ```bash 
 dotnet new nunit
 ```
@@ -339,67 +355,75 @@ El comando nos creara un proyecto de tests usando NUnit como librería de prueba
 
 </Project>
 ```
-El proyecto de pruebas requiere de otros paquetes para poder correr las pruebas unitarias. "dotnet new" en el paso anterior nos añade SDK de test de Microsoft, el framework de pruebas NUnit y el NUnit test adapter. Ahora tenemos que añadir una referencia entre el proyecto de pruebas y el proyecto maximo, usando el comando "dotnet add reference":
+El proyecto de pruebas requiere de otros paquetes para poder correr las pruebas unitarias. "dotnet new" en el paso anterior nos añade SDK de test de Microsoft, el framework de pruebas NUnit y el NUnit test adapter. Ahora tenemos que añadir una referencia unidireccional entre el proyecto de pruebas y el proyecto de librería utils, usando el comando "dotnet add reference":
 ```bash 
-dotnet add reference ..maximo/maximo.csproj
+dotnet add reference ../utils/utils.csproj
 ```
 
 La estructura de la solución queda de la siguiente forma:
 ```bash
 .
-├── maximo
-│   ├── Maximo.cs
-│   ├── maximo.csproj
-│   └── obj
-│       ├── maximo.csproj.nuget.cache
-│       ├── maximo.csproj.nuget.g.props
-│       ├── maximo.csproj.nuget.g.targets
-│       └── project.assets.json
-├── maximo.tests
-│   ├── UnitTest1.cs
-│   ├── maximo.tests.csproj
-│   └── obj
-│       ├── maximo.tests.csproj.nuget.cache
-│       ├── maximo.tests.csproj.nuget.g.props
-│       ├── maximo.tests.csproj.nuget.g.targets
-│       └── project.assets.json
-└── tests.sln
-4 directories, 13 files
+├── testing-example.sln
+├── utils
+│   ├── JsonSerializer.cs
+│   ├── User.cs
+│   ├── obj
+│   │   ├── project.assets.json
+│   │   ├── utils.csproj.nuget.cache
+│   │   ├── utils.csproj.nuget.g.props
+│   │   └── utils.csproj.nuget.g.targets
+│   └── utils.csproj
+└── utils.tests
+    ├── JsonSerializerTests.cs
+    ├── obj
+    │   ├── project.assets.json
+    │   ├── utils.tests.csproj.nuget.cache
+    │   ├── utils.tests.csproj.nuget.g.props
+    │   └── utils.tests.csproj.nuget.g.targets
+    └── utils.tests.csproj
+
+4 directories, 14 files
 ```
 
 Ahora agreguemos a la solución el proyecto de pruebas unitarias que acabamos de crear volviendo al directorio dónde se encuentra la solución
 ```bash 
-dotnet sln add maximo.test/maximo.csproj
+dotnet sln add utils.tests/utils.tests.csproj 
 ```
 
 ### Creando nuestro primer test
-Vayamos a realizar nuestra primera prueba unitaria, para ello vayamos a nuestro proyecto de tests y cambiemos el nombre de la clase UnitTest1 a MaximoTests.
-Ahora escribamos nuestra clase de pruebas para probar la clase Maximo. Mas adelante explicaremos cada cosa con mas detalle:
+Vayamos a realizar nuestra primera prueba unitaria, para ello vayamos a nuestro proyecto de tests y cambiemos el nombre de la clase UnitTest1 a JsonSerializerTests.
+Ahora escribamos nuestra clase de pruebas para probar la clase JsonSerializer. Mas adelante explicaremos cada cosa con mas detalle:
 ```csharp
-using System.Collections.Generic;
 using NUnit.Framework;
-using maximo;
+using utils;
+
 namespace Tests
 {
     [TestFixture]
-    public class MaximoTests
+    public class JsonSerializerTests
     {
-        private Maximo _max;
+        private JsonSerializer _jsonSerializer;
 
         [SetUp]
         public void Setup()
         {
-            _max = new Maximo();
+            _jsonSerializer = new JsonSerializer();
         }
 
         [Test]
-        public void Max_PassList_ShouldReturnTheGreatestNumber()
+        public void Serialize_SerializeAnObject_ShouldSerializeItToJsonFormatString()
         {
-            var list = new List<int>() { 1, 2, 6, 98, 387, 4, 378, 39, 9, 1000, 23 };
+            string expectedResult = "{\"Name\":\"Jack\",\"LastName\":\"Stilson\",\"Age\":28,\"Email\":\"jack23@test.com\"}";
+            var user = new User { 
+                Name = "Jack", 
+                LastName = "Stilson", 
+                Age = 28, 
+                Email = "jack23@test.com" 
+            };
 
-            int maxNumber = _max.Max(list);
+            string result = _jsonSerializer.Serialize(user);
 
-            Assert.That(maxNumber, Is.EqualTo(1000));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
     }
 }
@@ -411,15 +435,15 @@ dotnet test
 
 Como podemos observar los test fallan, esto es debido a que no tenemos implementación en la clase Maximo. Hagamos que los tests pasen aplicando la correcta implementación en el método Max:
 ```csharp
-public int Max(IEnumerable<int> numbers)
+public class JsonSerializer
 {
-    int max = int.MinValue;
-    foreach (int currentNum in numbers)
+    public string Serialize<T>(T item) where T : class
     {
-        if(currentNum > max)
-            max = currentNum;
+        if(item == null)
+            throw new ArgumentNullException(nameof(item));
+
+        return JsonConvert.SerializeObject(item);
     }
-    return max;
 }
 ```
 
@@ -437,32 +461,119 @@ La serie de pruebas se ejecutó correctamente.
 Tiempo de ejecución de las pruebas: 1,2999 Segundos
 ```
 
-Ahora vamos a crear una prueba mas, pero esta va a ser algo diferente. Vamos hacer uso de los casos de prueba para crear múltiples pruebas
-en el mismo método de prueba. Para ello añadimos el siguiente método de prueba en nuestra clase de pruebas:
+Ahora que tenemos nuestra primera prueba, pasando correctamente y probando de forma unitaria una clase, vamos a pasar hacer otra clase pero esta vez no serializaremos un objeto a json
+lo haremos a XML. Para ello vamos al proyecto utils y vamos a agregar otra clase mas, esta se llamará XmlSerializer y por ahora tampoco tendrá una implementación:
 ```csharp
-[TestCase(new int[] {450, 4, 348}, 450)]
-[TestCase(new int[] {10, 560, 200}, 560)]
-[TestCase(new int[] {90, 1, 249}, 249)]
-public void Max_MethodCall_ShouldReturnTheGreatestNumberInEveryCase(IEnumerable<int> list, int expectedResult)
-{
-    int maxNumber = _max.Max(list);
+using System;
+using System.IO;
+using System.Xml;
 
-    Assert.AreEqual(maxNumber, expectedResult);
-} 
+namespace utils
+{
+    public class XmlSerializer
+    {
+        public string Serialize<T>(T item) where T : class
+        {
+            throw new NotImplementedException("Not implemented yet...");
+        }
+    }
+}
 ```
-Ahora ejecutemos las pruebas
+
+Como para la futura implementación usaremos una librería de terceros en el proyecto utils para transformar todo a formato xml, vamos a añadir el paquete nuget para satisfacer las dependencias:
+```bash
+dotnet add utils/utils.csproj package Microsoft.XmlSerializer.Generator --version 2.1.0-preview3.19128.7
+```
+
+Además tenemos que añadir una herramienta de .NET Core CLI al proyecto utils, para ello editamos el fichero de proyecto utils.csproj y añadimos lo siguiente debajo del ItemGroup con las referencias a los paquetes:
+```xml
+<ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.XmlSerializer.Generator" Version="2.1.0-preview3.19128.7" />
+</ItemGroup>
+```
+
+Ahora vamos a crear una clase mas de pruebas unitarias, para ello vamos al proyecto de pruebas, y agregamos una nueva clase de pruebas llamada XmlSerializerTests, tal cual así:
+```csharp
+using System;
+using NUnit.Framework;
+using utils;
+
+namespace Tests
+{
+    [TestFixture]
+    public class XmlSerializerTests
+    {
+        private XmlSerializer _xmlSerializer;
+
+        [SetUp]
+        public void Setup()
+        {
+            _xmlSerializer = new XmlSerializer();
+        }
+
+        [Test]
+        public void Serialize_SerializeAnObject_ShouldSerializeItToXmlFormatString()
+        {
+            string expectedResult = "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+                "<User xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
+                    "<Name>Jack</Name>" +
+                    "<LastName>Stilson</LastName>" +
+                    "<Age>28</Age>" +
+                    "<Email>jack23@test.com</Email>" +
+                "</User>";
+                
+            var user = new User { 
+                Name = "Jack", 
+                LastName = "Stilson", 
+                Age = 28, 
+                Email = "jack23@test.com" 
+            };
+
+            string result = _xmlSerializer.Serialize(user);
+
+            Assert.AreEqual(result, expectedResult);
+        }
+    }
+}
+```
+
+Ahora ejecutamos los tests
 ```bash
 dotnet test
-...
+```
+
+Como podemos ver la última prueba que hemos realizado ha fallado, debido a que el método de la clase que estamos testeando no tiene implementación, así que vayamos a implementar su función:
+```csharp
+public string Serialize<T>(T item) where T : class
+{
+    if(item == null)
+        throw new ArgumentNullException(nameof(item));
+
+    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+    var stringWriter = new StringWriter();
+
+    var xmlWriter = new XmlTextWriter(stringWriter);
+    serializer.Serialize(xmlWriter, item);
+
+    return stringWriter.ToString();
+}
+```
+
+Ahora una vez mas, arranquemos los test de nuevo y como podréis ver la prueba que fallaba, ahora funciona
+```bash
+dotnet test
 
 Iniciando la ejecución de pruebas, espere...
 
-Total de pruebas: 4. Correctas: 4. Con error: 0. Omitidas: 0.
+Total de pruebas: 2. Correctas: 2. Con error: 0. Omitidas: 0.
 La serie de pruebas se ejecutó correctamente.
-Tiempo de ejecución de las pruebas: 1,1744 Segundos
+Tiempo de ejecución de las pruebas: 1,1206 Segundos
 ```
 
-Vamos a explicar un poco los atributos de NUnit usados en los ejemplos y otros también se suelen usar:
+Como habéis podido observar hemos realizado las pruebas y las implementaciones de las clases que queriamos probar siguiendo el patrón RED - GREEN - REFACTOR. Este patrón se utiliza en TDD (Test Driven Development) una práctica que consiste en diseñar primero las pruebas y a partir de las pruebas desarrollar el código final haciendo refactorización.
+
+### Atributos
+Atributos de NUnit usados en los ejemplos y otros también se suelen usar:
 
 | Atributo        | Tipo | Descripción
 | --------------- | ---- | -------------
@@ -475,3 +586,75 @@ Vamos a explicar un poco los atributos de NUnit usados en los ejemplos y otros t
 | TestCase        | Método | Marca un método como prueba a la que se le pueden pasar parámetros, se pueden definir múltiples testcases por método
 
 Obviamente hay muchos mas atributos e información, para ello [visita la documentación de NUnit](https://github.com/nunit/docs/wiki/Attributes) sobre todos los atributos.
+
+### Afirmaciones
+Las afirmaciones o assertions son la base de nuestras pruebas, en NUnit hemos utilizado algunos de los métodos estáticos de la clase Assert, para afirmar si las pruebas pasan o no. Hay dos tipos de modelos de afirmación:
+- Modelo de restricción (Constraint Model)
+- Modelo Clásico (Classic Model)
+
+Aquí solo explicaré el modelo de restricción ya que es el que se usa mayormente en NUnit.
+#### Modelo de restricción
+Se le llama constraint model ya que toma como argumentos constraint objects. Para mas información sobre las diferentes restricciones que hay, visitar el [siguiente enlace](https://github.com/nunit/docs/wiki/Constraints).
+
+Algunos ejemplos de este modelo:
+##### Excepciones
+```csharp
+// Verificar si salta una excepción al llamar a un método o función
+Assert.That(() => {
+    WebClient.DownloadFile("https://myserver.com/resource/file.py");
+}, Throws.Exception);
+
+Assert.That(() => {
+    WebClient.DownloadFile("https://myserver.com/resource/file.py");
+}, Throws.Exception.TypeOf<WebException>());
+```
+
+##### Operaciones con numeros
+```csharp
+// Operaciones con numeros
+int result = 4 - 4;
+Assert.That(result, Is.Zero);
+
+int userListCount = 0;
+Assert.That(count, Is.Zero);
+
+int suma = 10 + 10;
+Assert.That(suma, Is.EqualTo(20));
+```
+
+##### Colecciones que implementen IEnumerable
+```csharp
+var list = System.Collections.Generic.List<int>(new int[] { 4, 1, 6, 8});
+Assert.That(list, Is.GreaterThan(0))
+Assert.That(list, Is.Empty);
+Assert.That(list, Contains.Item(4))
+Assert.That(list, Has.Member(4))
+Assert.That(list, Has.No.Member(10));
+Assert.That(list, Does.Contain(4));
+
+string[] sarray = new string[] { "c", "b", "a" };
+Assert.That(sarray, Is.Ordered.Descending);
+
+int[] iarray = new int[] { 1, 2, 3 };
+Assert.That(iarray, Is.Ordered);
+```
+
+##### Boleanos
+```csharp
+bool result = true;
+Assert.That(result, Is.True);
+
+bool result = false;
+Assert.That(result, Is.False);
+```
+##### Cadenas
+```csharp
+Assert.That(string.Empty, Is.Empty);
+Assert.That("Hello World!", Is.Not.Empty);
+Assert.That("{'Name':'Paco', 'Age':56}", Does.EndWith("}"))
+Assert.That("{'Name':'Paco', 'Age':56}", Does.StartWith("{"))
+Assert.That("{'Name':'Paco', 'Age':56}", Does.Not.StartWith("["))
+Assert.That("{'Name':'Paco', 'Age':56}", Does.StartWith("{'Name':"))
+```
+
+Obviamente la información es mucha mas extensa y hay muchos mas ejemplos. Para mas información sobre las afirmaciones (assertions) en NUnit os invito a que visiteis la [documentación oficial](https://github.com/nunit/docs/wiki/Assertions)
