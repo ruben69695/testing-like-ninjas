@@ -5,6 +5,7 @@ sudo: required
 dist: xenial
 dotnet: 2.2
 script:
+  - cd Seminary.Exercices
   - dotnet restore
   - dotnet test
   - dotnet publish -c Release

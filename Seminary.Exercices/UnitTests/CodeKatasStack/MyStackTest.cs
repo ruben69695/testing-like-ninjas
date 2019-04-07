@@ -18,7 +18,6 @@ namespace TestingLikeNinjas.UnitTests.CodeKatasStack
         public void Push_PushAnItem_ReturnStackWithThePushedItem()
         {
             var stack = _stack.Push("foo");
-            
             Assert.That(stack.Count, Is.EqualTo(1));
         }
 
@@ -26,7 +25,6 @@ namespace TestingLikeNinjas.UnitTests.CodeKatasStack
         public void Push_PushAnItem_SourceStackIsImmutableDueOperation()
         {
             _stack.Push("foo");
-            
             Assert.That(_stack.Count, Is.Zero);
         }
 
@@ -35,7 +33,6 @@ namespace TestingLikeNinjas.UnitTests.CodeKatasStack
         {
             var stack = _stack.Push("foo");
             stack = stack.Push("bar");
-            
             Assert.That(stack.Peek(), Is.EqualTo("bar"));
         }
 
@@ -44,7 +41,6 @@ namespace TestingLikeNinjas.UnitTests.CodeKatasStack
         {
             var stack = _stack.Push("foo");
             stack = stack.Pop();
-            
             Assert.That(stack.Count, Is.Zero);
         }
     }
