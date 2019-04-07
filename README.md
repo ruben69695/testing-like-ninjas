@@ -8,9 +8,10 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
 
 1. Aprender la importancia de las pruebas de software
 2. Indagar en los diferentes tipos de pruebas
-3. Conocer los Frameworks mas comunes para pruebas
-4. El Mocking y la Inyección de Dependencia
-5. Convertirte en un ninja haciendo pruebas unitarias
+3. Conocer las librerías mas comunes para pruebas unitarias en .NET
+4. Aprender a controlar el poder del Mocking y la Inyección de Dependencia
+5. Convertirte en un ninja haciendo pruebas unitarias usando .NET Core
+6. Quiero que te sientas mejor desarrollador después de la chapa
 
 ## Pruebas de Software
 - Actividades que forman parte del proceso de desarrollo de software
@@ -159,7 +160,7 @@ La inyección de dependencia es un patrón de diseño que nos permite poder inye
 - Para las pruebas unitarias nos permitrá poder simular el funcionamiento de estos objetos, creando nuestras propias implementaciónes
 - Seguiriamos el principio de inversión de la dependencia (SOLI**D**)
 
-### Ejemplo
+### Ejemplo por constructor
 ```csharp
 public class StorageData
 {
@@ -171,17 +172,46 @@ public class StorageData
 }
 ```
 
-## Pruebas de integración
-- Verifican el correcto funcionamiento del conjunto de elementos que componen el producto
-- Se realizan después de las pruebas unitarias
-- Nos permiten detectar defectos en las interfaces y en la interacción entre los diferentes componentes integrados
+### Ejemplo por método
+```csharp
+public class Calculator
+{
+    public int MakeOperation(IOperation operation)
+    {
+        if(operation == null)
+            throw new ArgumentNullException(nameof(operation));
 
-### Requisitos
-- Automatizable
-- Completas
-- Independientes
-- Profesionales
-- Fáciles de mantener
+        return operation.Calculate();
+    }
+}
+```
+
+### Ejemplo por propiedad
+```csharp
+public class FilterList : SuperList
+{
+    public IFilter filter;
+
+    public void MakeFilter()
+    {
+        if(filter == null)
+            throw new InvalidOperationException("Invalid, I don't have any filter assigned yet, assign one first");
+        
+        ViewCollection = filter.MakeFilter(SourceCollection);
+    }
+}
+
+struct Program
+{
+    static void Main(string[] args)
+    {
+        var customList = new FilterList(new int[] {1, 2, 3, 4, 5});
+        customList.Filter = new PrimeFilter(); // Class that implements IFilter
+        customList.MakeFilter();
+    }
+}
+
+```
 
 ## NUnit
 - Framework open source para el desarrollo de pruebas unitarias
@@ -665,3 +695,15 @@ Assert.That("{'Name':'Paco', 'Age':56}", Does.StartWith("{'Name':"))
 ```
 
 Obviamente la información es mucha mas extensa y hay muchos mas ejemplos. Para mas información sobre las afirmaciones (assertions) en NUnit os invito a que visiteis la [documentación oficial](https://github.com/nunit/docs/wiki/Assertions)
+
+## Pruebas de integración
+- Verifican el correcto funcionamiento del conjunto de elementos que componen el producto
+- Se realizan después de las pruebas unitarias
+- Nos permiten detectar defectos en las interfaces y en la interacción entre los diferentes componentes integrados
+
+### Requisitos
+- Automatizable
+- Completas
+- Independientes
+- Profesionales
+- Fáciles de mantener
