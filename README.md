@@ -1,10 +1,10 @@
 [![Build Status](https://travis-ci.com/ruben69695/testing-like-ninjas.svg?branch=master)](https://travis-ci.com/ruben69695/testing-like-ninjas) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=testing-like-ninjas&metric=alert_status)](https://sonarcloud.io/dashboard?id=testing-like-ninjas) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=testing-like-ninjas&metric=coverage)](https://sonarcloud.io/dashboard?id=testing-like-ninjas)
 
-## Bienvenidos al seminario "Testing Like Ninjas"
+# Bienvenidos al seminario "Testing Like Ninjas"
 
 Este seminario, esta orientado para el desarrollo de pruebas funcionales utilizando el lenguaje C# para la plataforma .NET Core de Microsoft, pero la teoría es común para cualquier otro lenguaje, como Python, Java, Javascript... y un largo etc.
 
-### Objetivos
+## Objetivos
 
 1. Aprender la importancia de las pruebas de software
 2. Indagar en los diferentes tipos de pruebas
@@ -12,12 +12,12 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
 4. El Mocking y la Inyección de Dependencia
 5. Convertirte en un ninja haciendo pruebas unitarias
 
-### Pruebas de Software
+## Pruebas de Software
 - Actividades que forman parte del proceso de desarrollo de software
 - Aseguran que la aplicación funcione correctamente
 - Proporcionan información sobre la calida del producto
 
-### Tipos de pruebas
+## Tipos de pruebas
 - Funcionales
    - Comprueban que el producto funcione acorde a los requisitos funcionales
    - Detectan posibles errores durante la fase de desarrollo
@@ -26,18 +26,18 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
   - Ayudan a conocer que riesgos puede correr el producto en un futuro
   - Nos permiten saber si el producto tiene un mal desempeño o un bajo rendimiento en entornos de producción
 
-#### Tipos de pruebas funcionales
+### Tipos de pruebas funcionales
 - Pruebas unitarias
 - Pruebas de regresión
 - Pruebas de integración
 
-### Pruebas unitarias
+## Pruebas unitarias
 - Centradas en probar únicamente funcionalidades concretas del programa cómo métodos o funciones
 - Nos aseguran que el código principal está funcionando como esperábamos
 
 ![UNIT TEST EXAMPLE](https://i.ibb.co/6ybZfhb/logger-library-2222.png[)
 
-#### Requisitos
+### Requisitos
 - Automatizable
 - Repetibles
 - Completas
@@ -45,20 +45,20 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
 - Profesionales
 - Rápidas de crear
 
-#### Ventajas
+### Ventajas
 - Fomentan la refactorización
 - Simplifican las pruebas de integración
 - Documentan el código
 - Nos permiten programar dependiendo de abstracciones y no de implementaciones
 - Los errores son mas fáciles de localizar
 
-#### Frameworks
+### Frameworks
 Para .NET en general tenemos disponibles una gran variedad de Frameworks que nos ayudarán a poder crear proyectos de pruebas unitarias para nuestro producto, cómo:
 - MSTest
 - **NUnit**
 - xUnit
 
-#### Ejemplo de pruebas con NUnit
+### Ejemplo de pruebas con NUnit
 ```csharp
 [Test]
 public void LogError_CallMethod_ShouldSetLastErrorProperty()
@@ -87,7 +87,7 @@ public void LogError_PassEmptyError_ShouldThrowArgumentNullException()
 }
 ```
 
-#### Mocking
+### Mocking
 Nos permite poder simular el funcionamiento de objetos complejos en la clase que estamos probando. 
 Algunos ejemplos:
 - Acceso a recursos
@@ -96,7 +96,7 @@ Algunos ejemplos:
 - Lógica de negocio
 - Interacción con el sistema
 
-###### Bad Practice
+#### Bad Practice
 La clase StorageData depende completamente de DbStorage (Una clase de acceso a base de datos), por lo tanto StorageData no se puede probar de forma unitaria.
 ![Bad Practice](https://i.ibb.co/wcNXMkJ/storage-library-unit-tests-bad-2222.png)
 
@@ -117,7 +117,7 @@ public class DbStorage
 }   
 ```
 
-###### Good Practice
+#### Good Practice
 Separando la interfaz de la implementación en la clase DbStorage, podremos simular su funcionamiento mediante mocking. Ahora StorageData es fácil de probar de forma unitaria ya que depende de una abstracción y no de una implementación. 
 ![Good Practice](https://i.ibb.co/Vpzht7m/storage-library-unit-tests-good-2222.png)
 ```csharp
@@ -142,24 +142,24 @@ public class DbStorage : IStorage
 ```
 
 
-#### Herramientas de mocking
+### Herramientas de mocking
 En .NET tenemos disponibles un conjunto de frameworks para realizar mocks (Fake object implementations), son los siguientes:
 - **NSubstitute**
 - Moq4
 - Rhino Mocks
 
-### Inyección de dependencia
+## Inyección de dependencia
 La inyección de dependencia es un patrón de diseño que nos permite poder inyectar una dependencia en aquellas clases que las necesiten. Hay distintas formas de inyección:
 - Por constructor
 - Por propiedad
 - Por método
 
-##### Ventajas de inyectar abstracciones
+### Ventajas de inyectar abstracciones
 - Nuestro código estará menos acoplado
 - Para las pruebas unitarias nos permitrá poder simular el funcionamiento de estos objetos, creando nuestras propias implementaciónes
 - Seguiriamos el principio de inversión de la dependencia (SOLI**D**)
 
-##### Ejemplo
+### Ejemplo
 ```csharp
 public class StorageData
 {
@@ -171,35 +171,35 @@ public class StorageData
 }
 ```
 
-### Pruebas de integración
+## Pruebas de integración
 - Verifican el correcto funcionamiento del conjunto de elementos que componen el producto
 - Se realizan después de las pruebas unitarias
 - Nos permiten detectar defectos en las interfaces y en la interacción entre los diferentes componentes integrados
 
-#### Requisitos
+### Requisitos
 - Automatizable
 - Completas
 - Independientes
 - Profesionales
 - Fáciles de mantener
 
-### NUnit
+## NUnit
 - Framework open source para el desarrollo de pruebas unitarias
 - Nos sirve también para pruebas de integración
 - Fork del conocido framework JUnit de Java
 - Diseñado para TDD (Test Driven Development)
 
-#### Plataformas soportadas
+### Plataformas soportadas
 - .NET Framework 2.0+
 - .NET Standard 1.4+
 - .NET Core
 
-#### Recursos
+### Recursos
 - [Repositorio de GitHub](https://github.com/nunit/nunit)
 - [Paquete Nuget](https://www.nuget.org/packages/NUnit)
 - [Documentación](https://github.com/nunit/docs/wiki/NUnit-Documentation)
 
-#### Código
+### Código
 ```csharp
 /* -- Atributo que marca la clase como colección de tests -- */
 [TestFixture] 
@@ -232,7 +232,7 @@ public class MyStackTest
     }
 }
 ```
-#### Resultado de ejecución
+### Resultado de ejecución
 ```
 Iniciando la ejecución de pruebas, espere...
 
@@ -241,7 +241,7 @@ La serie de pruebas se ejecutó correctamente.
 Tiempo de ejecución de las pruebas: 1,5129 Segundos
 ```
 
-#### Creando el proyecto en .NET Core
+## Creando el proyecto en .NET Core con NUnit
 Abrimos terminal e introducimos el siguiente comando para crear la solución
 ```bash
 dotnet new sln 
@@ -299,7 +299,7 @@ Volvemos al directorio dónde se encuentra la solución y agregamos el proyecto 
 dotnet sln add maximo/maximo.csproj
 ```
 
-#### Creando el proyecto de pruebas unitarias
+### Creando el proyecto de pruebas unitarias
 Primero de todo creamos el directorio maximo.tests. La estructura quedará de la siguiente forma
 ```bash
 .
@@ -372,7 +372,7 @@ Ahora agreguemos a la solución el proyecto de pruebas unitarias que acabamos de
 dotnet sln add maximo.test/maximo.csproj
 ```
 
-#### Creando nuestro primer test
+### Creando nuestro primer test
 Vayamos a realizar nuestra primera prueba unitaria, para ello vayamos a nuestro proyecto de tests y cambiemos el nombre de la clase UnitTest1 a MaximoTests.
 Ahora escribamos nuestra clase de pruebas para probar la clase Maximo. Mas adelante explicaremos cada cosa con mas detalle:
 ```csharp
