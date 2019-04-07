@@ -433,7 +433,7 @@ Una vez guardado vayamos a ejecutar las pruebas para ello utilizaremos el comand
 dotnet test
 ````
 
-Como podemos observar los test fallan, esto es debido a que no tenemos implementación en la clase Maximo. Hagamos que los tests pasen aplicando la correcta implementación en el método Max:
+Como podemos observar los test fallan, esto es debido a que no tenemos implementación en la clase JsonSerializer. Hagamos que los tests pasen aplicando la correcta implementación en el método Serialize:
 ```csharp
 public class JsonSerializer
 {
