@@ -120,6 +120,7 @@ public class DbStorage
 
 ### Good Practice
 Separando la interfaz de la implementación en la clase DbStorage, podremos simular su funcionamiento mediante mocking. Ahora StorageData es fácil de probar de forma unitaria ya que depende de una abstracción y no de una implementación. 
+
 ![Good Practice](https://i.ibb.co/Vpzht7m/storage-library-unit-tests-good-2222.png)
 ```csharp
 public class StorageData
