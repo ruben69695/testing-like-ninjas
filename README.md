@@ -744,7 +744,7 @@ operation.Received().MakeOperation(Arg.Any<int>(), Arg.Any<int>());
 operation.Received().MakeOperation(Arg.Any<int>(), 60);
 ```
 
-Del mismo modo podemos hacer que si nos pasan cualquier parámetro, nosotros siempre retornemos el mismo valor, por ejemplo si se llama al método Save para guardar un usuario, con cualquier tipo de parametro que sea de tipo usuario, siempre devolverá true hasta que nosotros le especifiquemos lo contrario
+Del mismo modo podemos hacer que si nos pasan cualquier parámetro, nosotros siempre retornemos el mismo valor, por ejemplo si se llama al método Save para guardar un usuario, con cualquier tipo de parámetro que sea de tipo usuario, siempre devolverá verdadero hasta que nosotros le especifiquemos lo contrario
 ```csharp
 persistance.Save(Arg.Any<User>()).Returns(true);
 ```
