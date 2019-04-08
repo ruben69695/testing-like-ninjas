@@ -717,7 +717,7 @@ public interface IOperation
     int Y { get; set; }
     int? Result { get; }
     
-    int MakeOperation();
+    int MakeOperation(int x, int y);
 }
 ```
 
@@ -726,27 +726,32 @@ Ahora creamos un mock de esta
 var operacion = Substitute.For<IOperation>();
 ```
 
-Podemos decirle a este mock con NSubstitute que nos retorne el resultado que queramos, para así simular su funcionamiento
+Podemos decirle a este mock con NSubstitute que nos retorne el resultado que queramos, para así simular su funcionamiento, por ejemplo vamos a simular que hacemos una operación de sumar
 ```csharp
-int result = operation.Suma(50, 8).Returns(58);
+int result = operation.MakeOperation(50, 8).Returns(58);
 Assert.That(result, Is.EqualTo(58));
 ```
 
 También podríamos saber si se ha llamado al método con unos parámetros específicos, y del mismo modo si no se ha recibido. Actua como una afirmación (assertion).
 ```csharp
-operation.Received().Suma(50, 8);
-operation.DidNotReceived().Suma(45, 1);
+operation.Received().MakeOperation(50, 8);
+operation.DidNotReceived().MakeOperation(45, 1);
 ```
 
 Si lo que queremos es saber si se ha llamado al método con cualquier parámetro, podemos hacer lo siguiente:
 ```csharp
-operation.Received().Suma(Arg.Any<int>(), Arg.Any<int>());
-operation.Received().Suma(Arg.Any<int>(), 60);
+operation.Received().MakeOperation(Arg.Any<int>(), Arg.Any<int>());
+operation.Received().MakeOperation(Arg.Any<int>(), 60);
 ```
 
-Del mismo modo podemos hacer que si nos pasan cualquier parámetro, nosotros siempre retornemos el mismo valor
+Del mismo modo podemos hacer que si nos pasan cualquier parámetro, nosotros siempre retornemos el mismo valor, por ejemplo si se llama al método Save para guardar un usuario, con cualquier tipo de parametro que sea de tipo usuario, siempre devolverá true hasta que nosotros le especifiquemos lo contrario
 ```csharp
 persistance.Save(Arg.Any<User>()).Returns(true);
+```
+
+Ahora un ejemplo parecido al anterior, pero nos devolverá true únicamente cuando el usuario que se le pase por parametro tenga una edad superior o igual a 18 años
+```csharp
+persistance.Save(Arg.Is<User>(u => u.Age >= 18)).Returns(true);
 ```
 
 ## Implementando NSubstitute en el proyecto .NET Core
