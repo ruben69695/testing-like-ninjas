@@ -907,7 +907,7 @@ Tiempo de ejecución de las pruebas: 1,3040 Segundos
 ```
 
 Perfecto ya tenemos nuestra última prueba y además hemos realizado mocking de una dependencia. El objetivo del mocking es sencillo, simular el funcionamiento de dependencias el cual no estamos probando en ese momento.
-Es muy bueno acostumbrarse a separar conceptos y a programar de forma desacoplada, además de que las pruebas unitarias se hacen más sencillas, más fáciles de leer y de mantener, como resultado final te hace ser mejor desarrollador en todos los aspectos.
+Es muy bueno acostumbrarse a separar conceptos y a programar de forma desacoplada, además, las pruebas unitarias se hacen más sencillas, más fáciles de leer y también mas fáciles de mantener. Como resultado final te hace ser mejor desarrollador en todos los aspectos.
 
 ## Pruebas de integración
 - Verifican el correcto funcionamiento del conjunto de elementos que componen el producto
