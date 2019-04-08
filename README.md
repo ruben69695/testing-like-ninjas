@@ -696,6 +696,59 @@ Assert.That("{'Name':'Paco', 'Age':56}", Does.StartWith("{'Name':"))
 
 Obviamente la información es mucha mas extensa y hay muchos mas ejemplos. Para mas información sobre las afirmaciones (assertions) en NUnit os invito a que visiteis la [documentación oficial](https://github.com/nunit/docs/wiki/Assertions)
 
+## NSubstitute
+Librería para poder crear mocks, esto nos permite poder simular el funcionamiento de nuestras dependencias en las pruebas unitarias.
+
+### Características
+- Librería de mocking open source
+- API amigable y con pocas lambdas
+- Perfecta para los que se estan iniciando en el mundo de las pruebas unitarias
+
+### Requisitos
+- Únicamente se podrán hacer mocks de Interfaces o de los miembros virtuales de las clases
+
+### Ejemplo crear mock de una interfaz
+
+Tenemos nuestra interfaz:
+```csharp
+public interface IOperation
+{
+    int X { get; set; }
+    int Y { get; set; }
+    int? Result { get; }
+    
+    int MakeOperation();
+}
+```
+
+Ahora creamos un mock de esta
+```csharp
+var operacion = Substitute.For<IOperation>();
+```
+
+Podemos decirle a este mock con NSubstitute que nos retorne el resultado que queramos, para así simular su funcionamiento
+```csharp
+int result = operation.Suma(50, 8).Returns(58);
+Assert.That(result, Is.EqualTo(58));
+```
+
+También podriamos saber si se ha llamado al método con unos parámetros especificos, y del mismo modo si no se ha recibido. Actua como una afirmación (assertion).
+```csharp
+operation.Received().Suma(50, 8);
+operation.DidNotReceived().Suma(45, 1);
+```
+
+Si lo que queremos es saber si se ha llamado al método con cualquier parámetro, podemos hacer lo siguiente:
+```csharp
+operation.Received().Suma(Arg.Any<int>(), Arg.Any<int>());
+operation.Received().Suma(Arg.Any<int>(), 60);
+```
+
+Del mismo modo podemos hacer que si nos pasan cualquier parámetro, nosotros siempre retornemos el mismo valor
+```csharp
+persistance.Save(Arg.Any<User>()).Returns(true);
+```
+
 ## Pruebas de integración
 - Verifican el correcto funcionamiento del conjunto de elementos que componen el producto
 - Se realizan después de las pruebas unitarias
