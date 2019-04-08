@@ -749,7 +749,7 @@ Del mismo modo podemos hacer que si nos pasan cualquier parámetro, nosotros sie
 persistance.Save(Arg.Any<User>()).Returns(true);
 ```
 
-Ahora un ejemplo parecido al anterior, pero nos devolverá true únicamente cuando el usuario que se le pase por parametro tenga una edad superior o igual a 18 años
+Ahora un ejemplo parecido al anterior, pero nos devolverá verdadero únicamente cuando el usuario que se le pase por parámetro tenga una edad superior o igual a 18 años
 ```csharp
 persistance.Save(Arg.Is<User>(u => u.Age >= 18)).Returns(true);
 ```
