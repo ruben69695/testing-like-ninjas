@@ -764,9 +764,150 @@ dotnet add utils.tests/utils.tests.csproj package NSubstitute
 ```
 
 ### Creando nuestro primer Mock
-Ahora que tenemos la librería instalada, vamos a crear una clase en el proyecto utils.csproj, la clase va a ser una clase con una única funcionalidad, gestionar serializaciones de objetos.
+Ahora que tenemos la librería instalada, vamos a crear dos interfaces en archivos .cs separados en el proyecto utils.csproj:
+
+ISerializer
 ```csharp
+namespace utils 
+{
+    public interface ISerializer
+    {
+        string Serialize<T>(T item) where T : class;
+    }
+}
 ```
+
+IFileSerializer
+```csharp
+namespace utils 
+{
+    public interface IFileSerializer
+    {
+        ISerializer Serializer { get; }
+        bool SerializeToFile<T> (T item, string fileName) where T : class;
+    }
+}
+```
+
+Ahora que tenemos la interfaz ISerializer, vamos hacer lo que pertoca con ella, implementarla en las clases: JsonSerializer y XmlSerializer:
+```csharp
+public class JsonSerializer : ISerializer { ... }
+
+public class XmlSerializer : ISerializer { ... }
+```
+
+Ahora que tenemos nuestras dos interfaces nuevas y hemos implementado ISerializer en las dos clases que serializan, vamos a crear la clase FileSerializer, que va a ser una clase que se ocupará de crear ficheros con los datos serializados en el formato que nosotros queramos, podrá ser JSON o XML gracias a las clases que habíamos creado con anterioridad. La crearemios sin implementación e implementaremos la interfaz IFileSerializer:
+```csharp
+using System;
+using System.IO;
+
+namespace utils
+{
+    public class FileSerializer : IFileSerializer
+    {
+        private readonly ISerializer _serializer;
+
+        public FileSerializer(ISerializer serializer)
+        { 
+            _serializer = serializer;
+        }
+
+        public ISerializer Serializer => _serializer;
+
+        public bool SerializeToFile<T>(T item, string fileName) where T : class
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}
+```
+
+### Volviendo a crear pruebas
+Sencillo, para que más. Ahora que tenemos la estructura básica de la clase y no tenemos implementación, vamos a crear otra prueba en el proyecto utils.tests que habíamos creado, la nueva clase de pruebas se llamará FileSerializerTests:
+
+FileSerializerTests
+```csharp
+using NUnit.Framework;
+using NSubstitute;
+using utils;
+
+namespace Tests
+{
+    [TestFixture]
+    public class FileSerializerTests
+    {
+        private FileSerializer _fileSerializer;
+        private ISerializer _serializerMock;
+
+        [SetUp]
+        public void Setup()
+        {
+            _serializerMock = Substitute.For<ISerializer>();
+            _fileSerializer = new FileSerializer(_serializerMock);
+        }
+
+        [Test]
+        public void SerializeToFile_MethodCall_ShouldCreateFileWithContent()
+        {
+            // Simulamos el resultado que internamente nos generará la llamada a la función Serialize
+            _serializerMock.Serialize(Arg.Any<User>()).Returns("Esto es el resultado que simulo, me da igual si es json, xml, chino o catalán, no estoy testeando la clase que lo hace ahora mismo");
+
+            var result = _fileSerializer.SerializeToFile(new User(), "test.txt");
+
+            Assert.That(result, Is.True);
+        }
+    }
+}
+```
+
+Ahora ejecutemos las pruebas, cómo ya sabéis... fallarán, no tenemos implementación en la función SerializeToFile:
+```bash
+Iniciando la ejecución de pruebas, espere...
+Con error   SerializeToFile_MethodCall_ShouldCreateFileWithContent
+Mensaje de error:
+ System.NotImplementedException : The method or operation is not implemented.
+Seguimiento de la pila:
+   at utils.FileSerializer.SerializeToFile[T](T item, String fileName) in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils/FileSerializer.cs:line 16
+   at Tests.FileSerializerTests.SerializeToFile_MethodCall_ShouldCreateFileWithContent() in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils.tests/FileSerializerTests.cs:line 26
+
+Total de pruebas: 3. Correctas: 2. Con error: 1. Omitidas: 0.
+No se pudo ejecutar la serie de pruebas.
+Tiempo de ejecución de las pruebas: 1,3558 Segundos
+```
+
+Pues no hay tiempo que perder, vamos a implementar su funcionalidad, vamos a ello!
+```csharp
+public bool SerializeToFile<T>(T item, string fileName) where T : class
+{
+    if(string.IsNullOrWhiteSpace(fileName))
+        throw new ArgumentNullException(nameof(fileName));
+    if(item == null)
+        throw new ArgumentNullException(nameof(item));
+    
+    bool serialized = false;
+    string data = _serializer.Serialize(item);
+
+    using (StreamWriter outputFile = new StreamWriter(fileName))
+    {
+        outputFile.WriteLine(data);
+        serialized = true;
+    }
+
+    return serialized;
+}
+```
+
+Volvamos a ejecutar las pruebas de nuevo:
+```bash
+Iniciando la ejecución de pruebas, espere...
+
+Total de pruebas: 3. Correctas: 3. Con error: 0. Omitidas: 0.
+La serie de pruebas se ejecutó correctamente.
+Tiempo de ejecución de las pruebas: 1,3040 Segundos
+```
+
+Perfecto ya tenemos nuestra última prueba y además hemos realizado mocking de una dependencia. El objetivo del mocking es sencillo, simular el funcionamiento de dependencias el cual no estamos probando en ese momento.
+Es muy bueno acostumbrarse a separar conceptos y a programar de forma desacoplada, además de que las pruebas unitarias se hacen más sencillas, más fáciles de leer y de mantener, como resultado final te hace ser mejor desarrollador en todos los aspectos.
 
 ## Pruebas de integración
 - Verifican el correcto funcionamiento del conjunto de elementos que componen el producto

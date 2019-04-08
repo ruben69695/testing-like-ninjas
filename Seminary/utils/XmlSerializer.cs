@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace utils
 {
-    public class XmlSerializer
+    public class XmlSerializer : ISerializer
     {
         public string Serialize<T>(T item) where T : class
         {
