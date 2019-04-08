@@ -88,7 +88,7 @@ public void LogError_PassEmptyError_ShouldThrowArgumentNullException()
 }
 ```
 
-### Mocking
+## Mocking
 Nos permite poder simular el funcionamiento de objetos complejos en la clase que estamos probando. 
 Algunos ejemplos:
 - Acceso a recursos
@@ -97,7 +97,7 @@ Algunos ejemplos:
 - Lógica de negocio
 - Interacción con el sistema
 
-#### Bad Practice
+### Bad Practice
 La clase StorageData depende completamente de DbStorage (Una clase de acceso a base de datos), por lo tanto StorageData no se puede probar de forma unitaria.
 ![Bad Practice](https://i.ibb.co/wcNXMkJ/storage-library-unit-tests-bad-2222.png)
 
@@ -118,7 +118,7 @@ public class DbStorage
 }   
 ```
 
-#### Good Practice
+### Good Practice
 Separando la interfaz de la implementación en la clase DbStorage, podremos simular su funcionamiento mediante mocking. Ahora StorageData es fácil de probar de forma unitaria ya que depende de una abstracción y no de una implementación. 
 ![Good Practice](https://i.ibb.co/Vpzht7m/storage-library-unit-tests-good-2222.png)
 ```csharp
