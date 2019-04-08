@@ -2,13 +2,13 @@
 
 # Bienvenidos al seminario "Testing Like Ninjas"
 
-Este seminario, esta orientado para el desarrollo de pruebas funcionales utilizando el lenguaje C# para la plataforma .NET Core de Microsoft, pero la teoría es común para cualquier otro lenguaje, como Python, Java, Javascript... y un largo etc.
+Este seminario, está orientado para el desarrollo de pruebas funcionales utilizando el lenguaje C# para la plataforma .NET Core de Microsoft, pero la teoría es común para cualquier otro lenguaje, como Python, Java, Javascript... Y un largo etc.
 
 ## Objetivos
 
 1. Aprender la importancia de las pruebas de software
 2. Indagar en los diferentes tipos de pruebas
-3. Conocer las librerías mas comunes para pruebas unitarias en .NET
+3. Conocer las librerías más comunes para pruebas unitarias en .NET
 4. Aprender a controlar el poder del Mocking y la Inyección de Dependencia
 5. Convertirte en un ninja haciendo pruebas unitarias usando .NET Core
 6. Quiero que te sientas mejor desarrollador después de la chapa
@@ -16,7 +16,7 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
 ## Pruebas de Software
 - Actividades que forman parte del proceso de desarrollo de software
 - Aseguran que la aplicación funcione correctamente
-- Proporcionan información sobre la calida del producto
+- Proporcionan información sobre la calidad del producto
 
 ## Tipos de pruebas
 - Funcionales
@@ -51,7 +51,7 @@ Este seminario, esta orientado para el desarrollo de pruebas funcionales utiliza
 - Simplifican las pruebas de integración
 - Documentan el código
 - Nos permiten programar dependiendo de abstracciones y no de implementaciones
-- Los errores son mas fáciles de localizar
+- Los errores son más fáciles de localizar
 
 ### Frameworks
 Para .NET en general tenemos disponibles una gran variedad de Frameworks que nos ayudarán a poder crear proyectos de pruebas unitarias para nuestro producto, cómo:
@@ -157,8 +157,8 @@ La inyección de dependencia es un patrón de diseño que nos permite poder inye
 
 ### Ventajas de inyectar abstracciones
 - Nuestro código estará menos acoplado
-- Para las pruebas unitarias nos permitrá poder simular el funcionamiento de estos objetos, creando nuestras propias implementaciónes
-- Seguiriamos el principio de inversión de la dependencia (SOLI**D**)
+- Para las pruebas unitarias nos permitirá poder simular el funcionamiento de estos objetos, creando nuestras propias implementaciones
+- Seguiríamos el principio de inversión de la dependencia (SOLI**D**)
 
 ### Ejemplo por constructor
 ```csharp
@@ -272,7 +272,7 @@ Tiempo de ejecución de las pruebas: 1,5129 Segundos
 ```
 
 ## Creando el proyecto en .NET Core con NUnit
-Abrimos terminal, cremos un directorio para nuestro proyecto, nos situamos en el e introducimos el siguiente comando para crear la solución
+Abrimos terminal, creamos un directorio para nuestro proyecto, nos situamos en él, e introducimos el siguiente comando para crear la solución
 ```bash
 dotnet new sln 
 ```
@@ -422,7 +422,7 @@ dotnet sln add utils.tests/utils.tests.csproj
 
 ### Creando nuestro primer test
 Vayamos a realizar nuestra primera prueba unitaria, para ello vayamos a nuestro proyecto de tests y cambiemos el nombre de la clase UnitTest1 a JsonSerializerTests.
-Ahora escribamos nuestra clase de pruebas para probar la clase JsonSerializer. Mas adelante explicaremos cada cosa con mas detalle:
+Ahora escribamos nuestra clase de pruebas para probar la clase JsonSerializer. Mas adelante explicaremos cada cosa con más detalle:
 ```csharp
 using NUnit.Framework;
 using utils;
@@ -463,7 +463,7 @@ Una vez guardado vayamos a ejecutar las pruebas para ello utilizaremos el comand
 dotnet test
 ````
 
-Como podemos observar los test fallan, esto es debido a que no tenemos implementación en la clase JsonSerializer. Hagamos que los tests pasen aplicando la correcta implementación en el método Serialize:
+Como podemos observar, los test fallan, esto es debido a que no tenemos implementación en la clase JsonSerializer. Hagamos que los tests pasen aplicando la correcta implementación en el método Serialize:
 ```csharp
 public class JsonSerializer
 {
@@ -482,7 +482,7 @@ Volvamos a pasar las pruebas:
 dotnet test
 ```
 
-Ahora cómo véis las pruebas ya pasan correctamente:
+Ahora cómo veis las pruebas ya pasan correctamente:
 ```bash
 Iniciando la ejecución de pruebas, espere...
 
@@ -492,7 +492,7 @@ Tiempo de ejecución de las pruebas: 1,2999 Segundos
 ```
 
 Ahora que tenemos nuestra primera prueba, pasando correctamente y probando de forma unitaria una clase, vamos a pasar hacer otra clase pero esta vez no serializaremos un objeto a json
-lo haremos a XML. Para ello vamos al proyecto utils y vamos a agregar otra clase mas, esta se llamará XmlSerializer y por ahora tampoco tendrá una implementación:
+lo haremos a XML. Para ello vamos al proyecto utils y vamos a agregar otra clase más, esta se llamará XmlSerializer y por ahora tampoco tendrá una implementación:
 ```csharp
 using System;
 using System.IO;
@@ -522,7 +522,7 @@ Además tenemos que añadir una herramienta de .NET Core CLI al proyecto utils. 
 </ItemGroup>
 ```
 
-Ahora vamos a crear una clase mas de pruebas unitarias, para ello vamos al proyecto de pruebas, y agregamos una nueva clase de pruebas llamada XmlSerializerTests, tal cual así:
+Ahora vamos a crear una clase más de pruebas unitarias, para ello vamos al proyecto de pruebas, y agregamos una nueva clase de pruebas llamada XmlSerializerTests, tal cual así:
 ```csharp
 using System;
 using NUnit.Framework;
@@ -589,7 +589,7 @@ public string Serialize<T>(T item) where T : class
 }
 ```
 
-Ahora una vez mas, arranquemos los test de nuevo y como podréis ver la prueba que era antes incorrecta, ahora es correcta!
+Ahora una vez más, arranquemos los test de nuevo y como podréis ver la prueba que era antes incorrecta, ahora es correcta!
 ```bash
 dotnet test
 
@@ -604,7 +604,7 @@ Como habéis podido observar hemos realizado las pruebas antes que las implement
 1. Hemos creado las clases sin implementación alguna.
 2. Hemos diseñado las pruebas.
 3. Hemos ejecutado las pruebas sabiendo que iban a fallar.
-4. Al ver que fallabán, hemos añadido la correcta implementación en los métodos que estabamos probando.
+4. Al ver que fallaban, hemos añadido la correcta implementación en los métodos que estábamos probando.
 5. Hemos vuelto a ejecutar las pruebas hasta que han pasado.
 
 Tal vez no os habréis dado cuenta pero hemos seguido el patrón RED - GREEN - REFACTOR. Este patrón se utiliza en TDD ([Test Driven Development](https://es.wikipedia.org/wiki/Desarrollo_guiado_por_pruebas)) una práctica que consiste en diseñar primero las pruebas y a partir de las pruebas desarrollar el código final haciendo refactorización.
@@ -622,7 +622,7 @@ Atributos de NUnit usados en los ejemplos y otros también se suelen usar:
 | SetUpFixture    | Clase  | Marca la clase que contiene los métodos OneTimeSetUp o OneTimeTearDown para todas las pruebas del espacio de nombres
 | TestCase        | Método | Marca un método como prueba a la que se le pueden pasar parámetros, se pueden definir múltiples testcases por método
 
-Obviamente hay muchos mas atributos e información, para ello [visita la documentación de NUnit](https://github.com/nunit/docs/wiki/Attributes) sobre todos los atributos.
+Obviamente hay muchos más atributos e información, para ello [visita la documentación de NUnit](https://github.com/nunit/docs/wiki/Attributes) sobre todos los atributos.
 
 ### Afirmaciones
 Las afirmaciones o assertions son la base de nuestras pruebas, en NUnit hemos utilizado algunos de los métodos estáticos de la clase Assert, para afirmar si las pruebas pasan o no. Hay dos tipos de modelos de afirmación:
@@ -631,7 +631,7 @@ Las afirmaciones o assertions son la base de nuestras pruebas, en NUnit hemos ut
 
 Aquí solo explicaré el modelo de restricción ya que es el que se usa mayormente en NUnit.
 #### Modelo de restricción
-Se le llama constraint model ya que toma como argumentos constraint objects. Para mas información sobre las diferentes restricciones que hay, visitar el [siguiente enlace](https://github.com/nunit/docs/wiki/Constraints).
+Se le llama constraint model ya que toma como argumentos constraint objects. Para más información sobre las diferentes restricciones que hay, visitar el [siguiente enlace](https://github.com/nunit/docs/wiki/Constraints).
 
 Algunos ejemplos de este modelo:
 ##### Excepciones
@@ -694,7 +694,7 @@ Assert.That("{'Name':'Paco', 'Age':56}", Does.Not.StartWith("["))
 Assert.That("{'Name':'Paco', 'Age':56}", Does.StartWith("{'Name':"))
 ```
 
-Obviamente la información es mucha mas extensa y hay muchos mas ejemplos. Para mas información sobre las afirmaciones (assertions) en NUnit os invito a que visiteis la [documentación oficial](https://github.com/nunit/docs/wiki/Assertions)
+Obviamente la información es mucha más extensa y hay muchos más ejemplos. Para más información sobre las afirmaciones (assertions) en NUnit os invito a que visiteis la [documentación oficial](https://github.com/nunit/docs/wiki/Assertions)
 
 ## NSubstitute
 Librería para poder crear mocks, esto nos permite poder simular el funcionamiento de nuestras dependencias en las pruebas unitarias.
@@ -702,7 +702,7 @@ Librería para poder crear mocks, esto nos permite poder simular el funcionamien
 ### Características
 - Librería de mocking open source
 - API amigable y con pocas lambdas
-- Perfecta para los que se estan iniciando en el mundo de las pruebas unitarias
+- Perfecta para los que se están iniciando en el mundo de las pruebas unitarias
 
 ### Requisitos
 - Únicamente se podrán hacer mocks de Interfaces o de los miembros virtuales de las clases
@@ -732,7 +732,7 @@ int result = operation.Suma(50, 8).Returns(58);
 Assert.That(result, Is.EqualTo(58));
 ```
 
-También podriamos saber si se ha llamado al método con unos parámetros especificos, y del mismo modo si no se ha recibido. Actua como una afirmación (assertion).
+También podríamos saber si se ha llamado al método con unos parámetros específicos, y del mismo modo si no se ha recibido. Actua como una afirmación (assertion).
 ```csharp
 operation.Received().Suma(50, 8);
 operation.DidNotReceived().Suma(45, 1);
@@ -747,6 +747,20 @@ operation.Received().Suma(Arg.Any<int>(), 60);
 Del mismo modo podemos hacer que si nos pasan cualquier parámetro, nosotros siempre retornemos el mismo valor
 ```csharp
 persistance.Save(Arg.Any<User>()).Returns(true);
+```
+
+## Implementando NSubstitute en el proyecto .NET Core
+Ahora que tenemos claro lo que es el mocking y hemos visto unos cuantos ejemplos de como crear mocks utilizando la librería NSubstitute. Vamos a proceder a implementarlo en el proyecto de .NET Core y a ponerlo en práctica con un ejemplo real.
+
+### Instalando NSubstitute
+Volvamos al anterior proyecto que hemos usado de NUnit e instalemos la librería NSubstitute con el gestor de paquetes Nuget:
+```bash
+dotnet add utils.tests/utils.tests.csproj package NSubstitute
+```
+
+### Creando nuestro primer Mock
+Ahora que tenemos la librería instalada, vamos a crear una clase en el proyecto utils.csproj, la clase va a ser una clase con una única funcionalidad, gestionar serializaciones de objetos.
+```csharp
 ```
 
 ## Pruebas de integración
