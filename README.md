@@ -304,7 +304,7 @@ El comando nos creará la siguiente estructura
 1 directory, 6 files
 ```
 
-Renombramos la clase Class1.cs a JsonSerializer.cs y creamos una implementación que haga romper el programa en tiempo de ejecución
+Renombramos la clase Class1.cs a JsonSerializer.cs y creamos la función Serialize sin implementación:
 ```csharp
 using System;
 using Newtonsoft.Json;
@@ -765,7 +765,7 @@ dotnet add utils.tests/utils.tests.csproj package NSubstitute
 ```
 
 ### Creando nuestro primer Mock
-Ahora que tenemos la librería instalada, vamos a crear dos interfaces en archivos .cs separados en el proyecto utils.csproj:
+Ahora que tenemos la librería instalada, vamos a crear una cuantas interfaces en archivos .cs separados en el proyecto utils.csproj:
 
 ISerializer
 ```csharp
@@ -778,14 +778,25 @@ namespace utils
 }
 ```
 
-IFileSerializer
+IWritable
+```csharp
+namespace utils
+{
+    public interface IWritable
+    {
+        bool Write(string data);
+    }
+}
+```
+
+IDataExportable
 ```csharp
 namespace utils 
 {
-    public interface IFileSerializer
+    public interface IDataExportable
     {
         ISerializer Serializer { get; }
-        bool SerializeToFile<T> (T item, string fileName) where T : class;
+        bool Export<TData> (TData item, IWritable destination) where TData : class;
     }
 }
 ```
@@ -797,14 +808,14 @@ public class JsonSerializer : ISerializer { ... }
 public class XmlSerializer : ISerializer { ... }
 ```
 
-Ahora que tenemos nuestras dos interfaces nuevas y hemos implementado ISerializer en las dos clases que serializan, vamos a crear la clase FileSerializer, que va a ser una clase que se ocupará de crear ficheros con los datos serializados en el formato que nosotros queramos, podrá ser JSON o XML gracias a las clases que habíamos creado con anterioridad. La crearemios sin implementación e implementaremos la interfaz IFileSerializer:
+Ahora que tenemos nuestras interfaces nuevas y hemos implementado ISerializer en las dos clases que serializan, vamos a crear la clase DataExporter, que va a ser una clase que se ocupará de exportar datos en el formato que nosotros queramos, podrá ser JSON o XML gracias a las clases que habíamos creado con anterioridad. La vamos a crear sin implementación y además implementaremos la interfaz IDataExportable:
 ```csharp
 using System;
 using System.IO;
 
 namespace utils
 {
-    public class FileSerializer : IFileSerializer
+    public class DataExporter : IDataExportable
     {
         private readonly ISerializer _serializer;
 
@@ -815,7 +826,7 @@ namespace utils
 
         public ISerializer Serializer => _serializer;
 
-        public bool SerializeToFile<T>(T item, string fileName) where T : class
+        public bool Export<TData> (TData item, IWritable destination) where TData : class
         {
             throw new System.NotImplementedException();
         }
@@ -835,26 +846,34 @@ using utils;
 namespace Tests
 {
     [TestFixture]
-    public class FileSerializerTests
+    public class DataExporterTests
     {
-        private FileSerializer _fileSerializer;
-        private ISerializer _serializerMock;
+        private DataExporter _dataExporter;
+        private ISerializer _serializer;
+        private IWritable _writableDestination;
 
         [SetUp]
         public void Setup()
         {
-            _serializerMock = Substitute.For<ISerializer>();
-            _fileSerializer = new FileSerializer(_serializerMock);
+            _serializer = Substitute.For<ISerializer>();
+            _writableDestination = Substitute.For<IWritable>();
+            _dataExporter = new DataExporter(_serializer);
         }
 
         [Test]
-        public void SerializeToFile_MethodCall_ShouldCreateFileWithContent()
+        public void Export_MethodCall_ShouldReturnTrue()
         {
-            // Simulamos el resultado que internamente nos generará la llamada a la función Serialize
-            _serializerMock.Serialize(Arg.Any<User>()).Returns("Esto es el resultado que simulo, me da igual si es json, xml, chino o catalán, no estoy testeando la clase que lo hace ahora mismo");
+            // Simulamos la serialización de los datos
+            string serializerDataSimulation = "Estos son los datos serializados, me da igual el formato que sea";
+            _serializer.Serialize(Arg.Any<User>()).Returns(serializerDataSimulation);
 
-            var result = _fileSerializer.SerializeToFile(new User(), "test.txt");
+            // Simulamos la escritura de los datos en un destino
+            _writableDestination.Write(serializerDataSimulation).Returns(true);
 
+            // Actuamos sobre el método que queremos probar
+            var result = _dataExporter.Export(new User(), _writableDestination);
+
+            // Afirmamos que la prueba pase
             Assert.That(result, Is.True);
         }
     }
@@ -863,38 +882,35 @@ namespace Tests
 
 Ahora ejecutemos las pruebas, cómo ya sabéis... fallarán, no tenemos implementación en la función SerializeToFile:
 ```bash
-Iniciando la ejecución de pruebas, espere...
-Con error   SerializeToFile_MethodCall_ShouldCreateFileWithContent
+IIniciando la ejecución de pruebas, espere...
+Con error   Export_MethodCall_ShouldReturnTrue
 Mensaje de error:
  System.NotImplementedException : The method or operation is not implemented.
 Seguimiento de la pila:
-   at utils.FileSerializer.SerializeToFile[T](T item, String fileName) in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils/FileSerializer.cs:line 16
-   at Tests.FileSerializerTests.SerializeToFile_MethodCall_ShouldCreateFileWithContent() in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils.tests/FileSerializerTests.cs:line 26
+   at utils.DataExporter.Export[TData](TData item, IWritable destination) in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils/DataExporter.cs:line 55
+   at Tests.FileSerializerTests.Export_MethodCall_ShouldReturnTrue() in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils.tests/DataExporterTests.cs:line 30
 
 Total de pruebas: 3. Correctas: 2. Con error: 1. Omitidas: 0.
 No se pudo ejecutar la serie de pruebas.
-Tiempo de ejecución de las pruebas: 1,3558 Segundos
+Tiempo de ejecución de las pruebas: 1,4639 Segundos
 ```
 
-Pues no hay tiempo que perder, vamos a implementar su funcionalidad, vamos a ello!
+Pues no hay tiempo que perder, vamos a añadir a la función export su correcta implementación
 ```csharp
-public bool SerializeToFile<T>(T item, string fileName) where T : class
+public bool Export<TData> (TData item, IWritable destination) where TData : class
 {
-    if(string.IsNullOrWhiteSpace(fileName))
-        throw new ArgumentNullException(nameof(fileName));
     if(item == null)
         throw new ArgumentNullException(nameof(item));
-    
-    bool serialized = false;
-    string data = _serializer.Serialize(item);
+    if(destination == null)
+        throw new ArgumentNullException(nameof(destination));
 
-    using (StreamWriter outputFile = new StreamWriter(fileName))
-    {
-        outputFile.WriteLine(data);
-        serialized = true;
-    }
+    bool exportResult = false;
 
-    return serialized;
+    string serializedData = _serializer.Serialize(item);
+
+    exportResult = destination.Write(serializedData);
+
+    return exportResult;
 }
 ```
 
@@ -915,9 +931,205 @@ Es muy bueno acostumbrarse a separar conceptos y a programar de forma desacoplad
 - Se realizan después de las pruebas unitarias
 - Nos permiten detectar defectos en las interfaces y en la interacción entre los diferentes componentes integrados
 
+![PruebaIntegracion](https://i.ibb.co/sW10Gg4/logger-library-integration-test.png)
+
 ### Requisitos
 - Automatizable
 - Completas
 - Independientes
 - Profesionales
 - Fáciles de mantener
+
+## Pruebas de integración en .NET Core
+Ahora que sabemos que son las pruebas de integración, va siendo hora de pasar a una parte mas práctica, vamos a implementar nuestra prueba de integración en .NET Core. Para ello utilizaremos el proyecto que ya tenemos.
+Así que no perdamos mas tiempo, vamos a ello!
+
+Primero de todo, vamos a crear una nueva clase, la cual se encargará principalmente de crear un fichero y escribir información en él. Llamaremos a la clase FileWriterHelper e implementará la interfaz IWritable. Debido a que esta clase toca el sistema de ficheros, no vamos hacer una prueba unitara de ella, la cubrirá nuestra futura prueba de integración:
+```csharp
+using System;
+using System.IO;
+
+namespace utils
+{
+    public class FileWriterHelper : IWritable
+    {
+        public string DestinationFile { get; private set; }
+
+        public FileWriterHelper(string destinationFile)
+        {
+            DestinationFile = destinationFile;
+        }
+
+        public bool Write(string data)
+        {
+            bool operationResult = false;
+
+            using (StreamWriter outputFile = new StreamWriter(DestinationFile))
+            {
+                outputFile.WriteLine(data);
+                operationResult = true;
+            }
+
+            return operationResult;
+        }
+    }
+}
+```
+
+Ahora creamos un nuevo directorio en la raíz del proyecto, utils.integrationtests, nos situamos en él y creamos el proyecto nuevo:
+```bash
+dotnet new nunit
+
+.
+├── testing-example.sln
+├── utils
+│   ├── DataExporter.cs
+│   ├── FileWriterHelper.cs
+│   ├── IDataExportable.cs
+│   ├── ISerializer.cs
+│   ├── IWritable.cs
+│   ├── JsonSerializer.cs
+│   ├── User.cs
+│   ├── XmlSerializer.cs
+│   ├── bin
+│   ├── obj
+│   └── utils.csproj
+├── utils.integrationtests
+│   ├── UnitTest1.cs
+│   ├── obj
+│   │   ├── project.assets.json
+│   └── utils.integrationtests.csproj
+└── utils.tests
+    ├── DataExporterTests.cs
+    ├── JsonSerializerTests.cs
+    ├── XmlSerializerTests.cs
+    ├── bin
+    ├── obj
+    └── utils.tests.csproj
+
+16 directories, 65 files
+```
+
+Agregamos nuestro nuevo proyecto a la solución:
+```bash
+dotnet sln ../testing-example.sln add utils.integrationtests.csproj
+```
+
+Ahora una referenica unidireccional del proyecto nuevo al proyecto utils
+```bash
+dotnet add reference ../utils/utils.csproj 
+```
+
+Ahora que tenemos el proyecto nuevo, vamos a renombrar la clase de test que nos crea de forma automática, cambiamos el nombre del archivo y el de la clase por JsonDataExportationTests e implementamos la siguiente prueba:
+```csharp
+using NUnit.Framework;
+using System.IO;
+using utils;
+
+namespace Tests
+{
+    public class JsonDataExportationTests
+    {
+        private const string FILEPATH = "json_data_export_test.json";
+
+        private DataExporter _dataExporter;
+        private ISerializer _serializer;
+        private IWritable _writableDestination;
+
+        [SetUp]
+        public void Setup()
+        {
+            _writableDestination = new FileWriterHelper(FILEPATH);
+            _serializer = new JsonSerializer();
+            _dataExporter = new DataExporter(_serializer);
+        }
+
+        [Test]
+        public void ExportUserDataIntoJsonFormatFile()
+        {
+            string expectedDataResult = @"{""Name"":""Jack"",""LastName"":""Stilson"",""Age"":28,""Email"":""jack23@test.com""}" + "\n";
+            var user = new User { 
+                Name = "Jack", 
+                LastName = "Stilson", 
+                Age = 28, 
+                Email = "jack23@test.com" 
+            };
+
+            _dataExporter.Export(user, _writableDestination);
+
+            string dataFromFile = File.ReadAllText(FILEPATH);
+
+            Assert.That(dataFromFile, Is.EqualTo(expectedDataResult));
+        }
+    }
+}
+```
+
+Pasamos las pruebas. Si todo esta correcto, nos exportará los datos del usuario a un fichero y luego comprobará internamente que son los mismos datos que acabamos de serializar en formato JSON:
+```bash
+dotnet test
+
+Iniciando la ejecución de pruebas, espere...
+
+Total de pruebas: 1. Correctas: 1. Con error: 0. Omitidas: 0.
+La serie de pruebas se ejecutó correctamente.
+Tiempo de ejecución de las pruebas: 1,0825 Segundos
+```
+
+Vamos hacer una prueba mas, ahora vamos a añadir una prueba en la que exportaremos una colección de marcadores web, para ello vamos a crear la siguiente clase en utils:
+```csharp
+using System;
+
+namespace utils
+{
+    public class Bookmark
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Url { get; set; }
+    }
+}
+```
+
+Ahora vamos a crear la nueva prueba en la que le pasaremos al método de exportación una colección de objetos de tipo Bookmark y afirmaremos que se haya serializado como esperamos. Añadimos la siguiente prueba seguida de una propiedad:
+```csharp
+[Test]
+public void ExportBookmarkCollectionIntoJsonFormatFile()
+{
+    string expectedDataResult = 
+        @"[{""Id"":1,""Name"":""My GitHub"",""Url"":""https://github.com/ruben69695""}," +
+        @"{""Id"":2,""Name"":""StackOverflow"",""Url"":""https://stackoverflow.com/""}," + 
+        @"{""Id"":3,""Name"":""LinkedIn"",""Url"":""https://www.linkedin.com""}]" + "\n";
+
+    _dataExporter.Export(TestBookmarks, _writableDestination);
+
+    string dataFromFile = File.ReadAllText(FILEPATH);
+
+    Assert.That(dataFromFile, Is.EqualTo(expectedDataResult));
+}
+
+private IEnumerable<Bookmark> TestBookmarks 
+{
+    get 
+    {
+        return new List<Bookmark>(new [] {
+            new Bookmark { Id = 1, Name = "My GitHub", Url = "https://github.com/ruben69695" },
+            new Bookmark { Id = 2, Name = "StackOverflow", Url = "https://stackoverflow.com/" },
+            new Bookmark { Id = 3, Name = "LinkedIn", Url = "https://www.linkedin.com" },
+        });
+    }
+
+}
+```
+
+Pasamos las pruebas de nuevo y como esperabamos, las pruebas pasan correctamente
+```bash
+dotnet test
+
+Iniciando la ejecución de pruebas, espere...
+
+Total de pruebas: 2. Correctas: 2. Con error: 0. Omitidas: 0.
+La serie de pruebas se ejecutó correctamente.
+Tiempo de ejecución de las pruebas: 1,8326 Segundos
+```
+
