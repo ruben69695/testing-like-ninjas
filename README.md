@@ -33,7 +33,7 @@ Este seminario, está orientado para el desarrollo de pruebas funcionales utiliz
 - Pruebas de integración
 
 ## Pruebas unitarias
-- Centradas en probar únicamente funcionalidades concretas del programa cómo métodos o funciones
+- Centradas en probar únicamente funcionalidades concretas del programa cómo métodos, funciones o clases.
 - Nos aseguran que el código principal está funcionando como esperábamos
 
 ![UNIT TEST EXAMPLE](https://i.ibb.co/6ybZfhb/logger-library-2222.png[)
@@ -52,6 +52,53 @@ Este seminario, está orientado para el desarrollo de pruebas funcionales utiliz
 - Documentan el código
 - Nos permiten programar dependiendo de abstracciones y no de implementaciones
 - Los errores son más fáciles de localizar
+
+### Bad Practice
+La clase StorageData depende completamente de DbStorage (Una clase de acceso a base de datos), por lo tanto StorageData no se puede probar de forma unitaria.
+![Bad Practice](https://i.ibb.co/wcNXMkJ/storage-library-unit-tests-bad-2222.png)
+
+```csharp
+public class StorageData
+{
+    private readonly DbStorage _storage;
+
+    public StorageData()
+    {
+        _storage = new DbStorage();
+    }
+}
+
+public class DbStorage
+{
+    public bool Save(object item) { /* Access to database */ return true; }
+}   
+```
+
+### Good Practice
+Extrayendo los métodos de DbStorage a una interfaz y substituyendo la dependencia de la clase StorageData por la abstracción (interfaz), podremos simular el funcionamiento de su dependencia en las pruebas unitarias. Ahora StorageData es fácil de probar.
+
+![Good Practice](https://i.ibb.co/Vpzht7m/storage-library-unit-tests-good-2222.png)
+```csharp
+public class StorageData
+{
+    private readonly IStorage _storage;
+    public StorageData(IStorage storage)
+    {
+        _storage = storage;
+    }
+}
+
+public interface IStorage
+{
+    bool Save(object item);
+}
+
+public class DbStorage : IStorage
+{
+    public bool Save(object item) { return true; }
+}
+```
+
 
 ### Frameworks
 Para .NET en general tenemos disponibles una gran variedad de Frameworks que nos ayudarán a poder crear proyectos de pruebas unitarias para nuestro producto, cómo:
@@ -87,68 +134,6 @@ public void LogError_PassEmptyError_ShouldThrowArgumentNullException()
         Throws.ArgumentNullException);
 }
 ```
-
-## Mocking
-Nos permite poder simular el funcionamiento de objetos complejos en la clase que estamos probando. 
-Algunos ejemplos:
-- Acceso a recursos
-- Acceso a base de datos
-- Acceso a red o Internet
-- Lógica de negocio
-- Interacción con el sistema
-
-### Bad Practice
-La clase StorageData depende completamente de DbStorage (Una clase de acceso a base de datos), por lo tanto StorageData no se puede probar de forma unitaria.
-![Bad Practice](https://i.ibb.co/wcNXMkJ/storage-library-unit-tests-bad-2222.png)
-
-```csharp
-public class StorageData
-{
-    private readonly DbStorage _storage;
-
-    public StorageData()
-    {
-        _storage = new DbStorage();
-    }
-}
-
-public class DbStorage
-{
-    public bool Save(object item) { /* Access to database */ return true; }
-}   
-```
-
-### Good Practice
-Separando la interfaz de la implementación en la clase DbStorage, podremos simular su funcionamiento mediante mocking. Ahora StorageData es fácil de probar de forma unitaria ya que depende de una abstracción y no de una implementación. 
-
-![Good Practice](https://i.ibb.co/Vpzht7m/storage-library-unit-tests-good-2222.png)
-```csharp
-public class StorageData
-{
-    private readonly IStorage _storage;
-    public StorageData(IStorage storage)
-    {
-        _storage = storage;
-    }
-}
-
-public interface IStorage
-{
-    bool Save(object item);
-}
-
-public class DbStorage : IStorage
-{
-    public bool Save(object item) { return true; }
-}
-```
-
-
-### Herramientas de mocking
-En .NET tenemos disponibles un conjunto de frameworks para realizar mocks (Fake object implementations), son los siguientes:
-- **NSubstitute**
-- Moq4
-- Rhino Mocks
 
 ## Inyección de dependencia
 La inyección de dependencia es un patrón de diseño que nos permite poder inyectar una dependencia en aquellas clases que las necesiten. Hay distintas formas de inyección:
@@ -213,6 +198,22 @@ struct Program
 }
 
 ```
+
+
+## Mocking
+Nos permite poder simular el funcionamiento de objetos complejos en la clase que estamos probando. 
+Algunos ejemplos:
+- Acceso a recursos
+- Acceso a base de datos
+- Acceso a red o Internet
+- Lógica de negocio
+- Interacción con el sistema
+
+### Herramientas de mocking
+En .NET tenemos disponibles un conjunto de frameworks para realizar mocks (Fake object implementations), son los siguientes:
+- **NSubstitute**
+- Moq4
+- Rhino Mocks
 
 ## NUnit
 - Framework open source para el desarrollo de pruebas unitarias
