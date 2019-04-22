@@ -3,7 +3,7 @@ using MagicDarkLibraries.ViewModel.Interfaces;
 
 namespace MagicDarkLibraries.ViewModel.Classes
 {
-    public class Sith : Character, IPowerForce
+    public class Sith : Character, ISaberFighter
     {
         private Color _lightSaberColor;
         private string _deathStarPass;

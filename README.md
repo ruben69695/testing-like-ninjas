@@ -347,7 +347,7 @@ dotnet sln add utils/utils.csproj
 ```
 
 ### Creando el proyecto de pruebas unitarias
-Primero de todo creamos el directorio utils.tests. La estructura quedará de la siguiente forma
+Primero de todo creamos el directorio utils.unittests. La estructura quedará de la siguiente forma
 ```bash
 .
 ├── testing-example.sln
@@ -360,11 +360,11 @@ Primero de todo creamos el directorio utils.tests. La estructura quedará de la 
 │   │   ├── utils.csproj.nuget.g.props
 │   │   └── utils.csproj.nuget.g.targets
 │   └── utils.csproj
-└── utils.tests
+└── utils.unittests
 3 directories, 8 files
 ```
 
-Hacemos del directorio utils.tests nuestro directorio actual y creamos el nuevo proyecto de tests
+Hacemos del directorio utils.unittests nuestro directorio actual y creamos el nuevo proyecto de tests
 ```bash 
 dotnet new nunit
 ```
@@ -387,7 +387,7 @@ El comando nos creara un proyecto de tests usando NUnit como librería de prueba
 
 </Project>
 ```
-El proyecto de pruebas requiere de otros paquetes para poder correr las pruebas unitarias. "dotnet new" en el paso anterior nos añade SDK de test de Microsoft, el framework de pruebas NUnit y el NUnit test adapter. Ahora tenemos que añadir una referencia unidireccional entre el proyecto de pruebas y el proyecto de librería utils, usando el comando "dotnet add reference":
+El proyecto de pruebas requiere de otros paquetes para poder correr las pruebas unitarias. "dotnet new" en el paso anterior nos añade SDK de Microsoft, el framework de pruebas NUnit y el NUnit test adapter. Ahora tenemos que añadir una referencia unidireccional entre el proyecto de pruebas y el proyecto de librería utils, usando el comando "dotnet add reference":
 ```bash 
 dotnet add reference ../utils/utils.csproj
 ```
@@ -400,26 +400,18 @@ La estructura de la solución queda de la siguiente forma:
 │   ├── JsonSerializer.cs
 │   ├── User.cs
 │   ├── obj
-│   │   ├── project.assets.json
-│   │   ├── utils.csproj.nuget.cache
-│   │   ├── utils.csproj.nuget.g.props
-│   │   └── utils.csproj.nuget.g.targets
 │   └── utils.csproj
-└── utils.tests
+└── utils.tunitests
     ├── JsonSerializerTests.cs
     ├── obj
-    │   ├── project.assets.json
-    │   ├── utils.tests.csproj.nuget.cache
-    │   ├── utils.tests.csproj.nuget.g.props
-    │   └── utils.tests.csproj.nuget.g.targets
-    └── utils.tests.csproj
+    └── utils.unittests.csproj
 
 4 directories, 14 files
 ```
 
 Ahora agreguemos a la solución el proyecto de pruebas unitarias que acabamos de crear volviendo al directorio dónde se encuentra la solución
 ```bash 
-dotnet sln add utils.tests/utils.tests.csproj 
+dotnet sln add utils.unittests/utils.unittests.csproj 
 ```
 
 ### Creando nuestro primer test
@@ -762,7 +754,7 @@ Ahora que tenemos claro lo que es el mocking y hemos visto unos cuantos ejemplos
 ### Instalando NSubstitute
 Volvamos al anterior proyecto que hemos usado de NUnit e instalemos la librería NSubstitute con el gestor de paquetes Nuget:
 ```bash
-dotnet add utils.tests/utils.tests.csproj package NSubstitute
+dotnet add utils.unittests/utils.unittests.csproj package NSubstitute
 ```
 
 ### Creando nuestro primer Mock
@@ -889,7 +881,7 @@ Mensaje de error:
  System.NotImplementedException : The method or operation is not implemented.
 Seguimiento de la pila:
    at utils.DataExporter.Export[TData](TData item, IWritable destination) in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils/DataExporter.cs:line 55
-   at Tests.FileSerializerTests.Export_MethodCall_ShouldReturnTrue() in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils.tests/DataExporterTests.cs:line 30
+   at Tests.FileSerializerTests.Export_MethodCall_ShouldReturnTrue() in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils.unittests/DataExporterTests.cs:line 30
 
 Total de pruebas: 3. Correctas: 2. Con error: 1. Omitidas: 0.
 No se pudo ejecutar la serie de pruebas.
@@ -1000,13 +992,13 @@ dotnet new nunit
 │   ├── obj
 │   │   ├── project.assets.json
 │   └── utils.integrationtests.csproj
-└── utils.tests
+└── utils.unittests
     ├── DataExporterTests.cs
     ├── JsonSerializerTests.cs
     ├── XmlSerializerTests.cs
     ├── bin
     ├── obj
-    └── utils.tests.csproj
+    └── utils.unittests.csproj
 
 16 directories, 65 files
 ```
@@ -1134,3 +1126,24 @@ La serie de pruebas se ejecutó correctamente.
 Tiempo de ejecución de las pruebas: 1,8326 Segundos
 ```
 
+## Ejercicios
+En el repositorio encontraréis ejercicios que podéis realizar, se divide en 3 proyectos:
+
+- MagicDarkLibraries (Solución)
+Este proyecto contiene las clases refactorizadas listas para probar de forma unitaria
+- UnitTests (Solución)
+Este proyecto contiene todas las pruebas unitarias de las clases que forman las MagicDarkLibraries.
+- TrollLibraries
+Es un proyecto parecido a las MagicDarkLibraries, pero las clases no están refactorizadas, por lo tanto no se pueden probar de forma unitaria. Es aquí dónde os toca trabajar, intentar hacer pruebas unitarias, identificar las dependencias y refactorizar las clases para que sean fáciles de probar sustituyendo las dependencias por abstracciones.
+
+### Ejercicio CodeKatasStack
+Este ejercicio consiste en realizar las pertinentes pruebas unitarias a la clase MyStack. ¿Parece fácil verdad? Bueno esta clase es algo especial...
+
+### Ejercicio Installer
+Este ejercicio consiste en realizar las pruebas unitarias de la clase InstallerHelper, el problema de esta clase es que necesita de una refactorización, ya que es una clase que no se puede probar de forma unitaria ya que tiene una dependencia que accede a Internet, se escapa del ámbito unitario. Identificad la dependencia, abstraerla y realizar las pertinentes pruebas unitarias.
+
+### Ejercicio Logger
+Nos encontramos con uno de mis ejercicios favoritos. Esta clase de log, se encarga de hacer log de error en 3 dependencias externas: un fichero, una base de datos y un servicio web. El objetivo es identificar estas dependencias y refactorizar la clase para que sea fácil de probar pero además que sea extensible a hacer log en cualquier otro sitio sin tocar internamente el funcionamiento de la clase una vez refactorizada.
+
+### Ejercicio ViewModel
+Nos encontramos con el ejercicio más grande. Este ejercicio consiste como en los demás, identificar las dependencias que tiene nuestro view model y refactorizar la clase y sus dependencias para poder probar de forma unitaria el view model. En este ejercicio os doy la libertad de hacerlo como vosotros creáis conveniente y luego comprobaremos el resultado final.

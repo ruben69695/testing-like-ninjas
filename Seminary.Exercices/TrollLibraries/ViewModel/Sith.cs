@@ -2,7 +2,7 @@ using System.Drawing;
 
 namespace TrollLibraries.ViewModel
 {
-    public class Sith : Character, IPowerForce
+    public class Sith : Character, ISaberFighter
     {
         private Color _lightSaberColor;
         private string _deathStarPass;

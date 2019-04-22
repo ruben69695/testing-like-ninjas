@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "utils", "utils\utils.csproj", "{266E760D-1451-4923-A8FF-1EBF7A04BFB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "utils.tests", "utils.tests\utils.tests.csproj", "{C3411677-4312-48D6-BCC2-2FDAA1FF9B88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "utils.tests", "utils.unittests\utils.unittests.csproj", "{C3411677-4312-48D6-BCC2-2FDAA1FF9B88}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "utils.integrationtests", "utils.integrationtests\utils.integrationtests.csproj", "{B0AD6F3A-86B4-4457-A960-F6F70E72C696}"
 EndProject

@@ -3,7 +3,7 @@ using MagicDarkLibraries.ViewModel.Interfaces;
 
 namespace MagicDarkLibraries.ViewModel.Classes
 {
-    public class Jedi : Character, IPowerForce
+    public class Jedi : Character, ISaberFighter
     {
         private Color _lightSaberColor;
 

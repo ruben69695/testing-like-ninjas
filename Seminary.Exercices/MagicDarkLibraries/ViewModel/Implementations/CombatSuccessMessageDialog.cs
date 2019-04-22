@@ -49,9 +49,9 @@ namespace MagicDarkLibraries.ViewModel.Implementations
 
         public void ShowDialog()
         {
-            Title = _resourcesManager.GetResource("RemoveCombatTitle");
-            Message = _resourcesManager.GetResource("MessageRemoveCombat");
-            Image = Encoding.ASCII.GetBytes(_resourcesManager.GetResource("RemoveCombatSuccessImage"));
+            Title = _resourcesManager.GetResource("SuccessTitle");
+            Message = _resourcesManager.GetResource("SuccessMessage");
+            Image = Encoding.ASCII.GetBytes(_resourcesManager.GetResource("SuccessImage"));
             
             // Show Message to the user...
         }

@@ -6,7 +6,7 @@ namespace TrollLibraries.ViewModel
 {
     public class CombatSuccessMessageDialog : INotifyPropertyChanged
     {
-        private readonly ResourceManager _resourceManager;
+        private readonly ResourceManager _resourcesManager;
         private string _title;
         private string _message;
         private byte[] _image;
@@ -43,14 +43,14 @@ namespace TrollLibraries.ViewModel
         
         public CombatSuccessMessageDialog()
         {
-            _resourceManager = new ResourceManager();
+            _resourcesManager = new ResourceManager();
         }
 
         public void ShowDialog()
         {
-            Title = _resourceManager.GetResource("RemoveCombatTitle");
-            Message = _resourceManager.GetResource("MessageRemoveCombat");
-            Image = Encoding.ASCII.GetBytes(_resourceManager.GetResource("RemoveCombatSuccessImage"));
+            Title = _resourcesManager.GetResource("SuccessTitle");
+            Message = _resourcesManager.GetResource("SuccessMessage");
+            Image = Encoding.ASCII.GetBytes(_resourcesManager.GetResource("SuccessImage"));
             
             // Show Message to the user...
         }

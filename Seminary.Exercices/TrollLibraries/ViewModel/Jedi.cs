@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace TrollLibraries.ViewModel
 {
-    public class Jedi : Character, IPowerForce
+    public class Jedi : Character, ISaberFighter
     {
         private Color _lightSaberColor;
 
