@@ -143,7 +143,7 @@ La inyección de dependencia es un patrón de diseño que nos permite poder inye
 
 ### Ventajas de inyectar abstracciones
 - Nuestro código estará menos acoplado
-- Para las pruebas unitarias nos permitirá poder simular el funcionamiento de estos objetos, creando nuestras propias implementaciones
+- Para las pruebas unitarias nos permitirá poder simular el funcionamiento de estos objetos (dependencias), creando nuestras propias implementaciones e inyectándolas cuando estemos probando.
 - Seguiríamos el principio de inversión de la dependencia (SOLI**D**)
 
 ### Ejemplo por constructor
@@ -201,8 +201,8 @@ struct Program
 
 
 ## Mocking
-Nos permite poder simular el funcionamiento de objetos complejos en la clase que estamos probando. 
-Algunos ejemplos:
+Nos permite poder simular el funcionamiento de las dependencias (objetos complejos) en la clase que estamos probando. 
+Algunos ejemplos de dependencias en nuestras clases:
 - Acceso a recursos
 - Acceso a base de datos
 - Acceso a red o Internet
@@ -812,7 +812,7 @@ namespace utils
     {
         private readonly ISerializer _serializer;
 
-        public FileSerializer(ISerializer serializer)
+        public DataExporter(ISerializer serializer)
         { 
             _serializer = serializer;
         }
@@ -821,16 +821,16 @@ namespace utils
 
         public bool Export<TData> (TData item, IWritable destination) where TData : class
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
 ```
 
 ### Volviendo a crear pruebas
-Sencillo, para que más. Ahora que tenemos la estructura básica de la clase y no tenemos implementación, vamos a crear otra prueba en el proyecto utils.tests que habíamos creado, la nueva clase de pruebas se llamará FileSerializerTests:
+Sencillo, para que más. Ahora que tenemos la estructura básica de la clase y no tenemos implementación, vamos a crear otra prueba en el proyecto utils.tests que habíamos creado, la nueva clase de pruebas se llamará DataExporterTests:
 
-FileSerializerTests
+DataExporterTests
 ```csharp
 using NUnit.Framework;
 using NSubstitute;
@@ -873,7 +873,7 @@ namespace Tests
 }
 ```
 
-Ahora ejecutemos las pruebas, cómo ya sabéis... fallarán, no tenemos implementación en la función SerializeToFile:
+Ahora ejecutemos las pruebas, cómo ya sabéis... fallarán, no tenemos implementación en la función Export:
 ```bash
 IIniciando la ejecución de pruebas, espere...
 Con error   Export_MethodCall_ShouldReturnTrue
@@ -881,7 +881,7 @@ Mensaje de error:
  System.NotImplementedException : The method or operation is not implemented.
 Seguimiento de la pila:
    at utils.DataExporter.Export[TData](TData item, IWritable destination) in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils/DataExporter.cs:line 55
-   at Tests.FileSerializerTests.Export_MethodCall_ShouldReturnTrue() in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils.unittests/DataExporterTests.cs:line 30
+   at Tests.DataExporterTests.Export_MethodCall_ShouldReturnTrue() in /Users/rubenarrebola/Develop/testing-like-ninjas/Seminary/utils.unittests/DataExporterTests.cs:line 30
 
 Total de pruebas: 3. Correctas: 2. Con error: 1. Omitidas: 0.
 No se pudo ejecutar la serie de pruebas.
