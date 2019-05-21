@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using utils;
@@ -24,7 +25,7 @@ namespace Tests
         [Test]
         public void ExportUserDataIntoJsonFormatFile()
         {
-            string expectedDataResult = @"{""Name"":""Jack"",""LastName"":""Stilson"",""Age"":28,""Email"":""jack23@test.com""}" + "\n";
+            string expectedDataResult = @"{""Name"":""Jack"",""LastName"":""Stilson"",""Age"":28,""Email"":""jack23@test.com""}" + Environment.NewLine;
             var user = new User { 
                 Name = "Jack", 
                 LastName = "Stilson", 
@@ -45,7 +46,7 @@ namespace Tests
             string expectedDataResult = 
                 @"[{""Id"":1,""Name"":""My GitHub"",""Url"":""https://github.com/ruben69695""}," +
                 @"{""Id"":2,""Name"":""StackOverflow"",""Url"":""https://stackoverflow.com/""}," + 
-                @"{""Id"":3,""Name"":""LinkedIn"",""Url"":""https://www.linkedin.com""}]" + "\n";
+                @"{""Id"":3,""Name"":""LinkedIn"",""Url"":""https://www.linkedin.com""}]" + Environment.NewLine;
 
             _dataExporter.Export(TestBookmarks, _writableDestination);
 
