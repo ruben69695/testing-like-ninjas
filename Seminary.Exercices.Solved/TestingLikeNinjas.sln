@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingLikeNinjas", "TestingLikeNinjas.csproj", "{F467C021-9B25-44A3-AD53-AAA9CBE78E44}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingLikeNinjas", "UnitTests\TestingLikeNinjas.csproj", "{F467C021-9B25-44A3-AD53-AAA9CBE78E44}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicDarkLibraries", "MagicDarkLibraries\MagicDarkLibraries.csproj", "{9F24DF49-285D-4334-AFD1-30B8A04928EB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrollLibraries", "TrollLibraries\TrollLibraries.csproj", "{D616F437-9AA2-42D4-8260-4C9A714CAA4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
