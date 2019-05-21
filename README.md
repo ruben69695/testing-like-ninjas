@@ -1129,12 +1129,17 @@ Tiempo de ejecución de las pruebas: 1,8326 Segundos
 ## Ejercicios
 En el repositorio encontraréis ejercicios que podéis realizar, se divide en 3 proyectos:
 
-- MagicDarkLibraries (Solución)
-Este proyecto contiene las clases refactorizadas listas para probar de forma unitaria
-- UnitTests (Solución)
-Este proyecto contiene todas las pruebas unitarias de las clases que forman las MagicDarkLibraries.
+Directorio Seminary.Exercices.Solved, este directorio contiene la solución a los ejercicios, se trata de los siguientes proyectos:
+- MagicDarkLibraries:
+Este proyecto contiene las clases que se tienen que probar ya refactorizadas
+- UnitTests
+Este proyecto contiene todas las pruebas unitarias que se piden en los ejercicios de las clases del proyecto MagicDarkLibraries.
+
+Por otra parte tenemos Seminary.Exercices, este directorio es dónde tendréis que hacer los ejercicios, consta de lo siguiente:
 - TrollLibraries
 Es un proyecto parecido a las MagicDarkLibraries, pero las clases no están refactorizadas, por lo tanto no se pueden probar de forma unitaria. Es aquí dónde os toca trabajar, intentar hacer pruebas unitarias, identificar las dependencias y refactorizar las clases para que sean fáciles de probar sustituyendo las dependencias por abstracciones.
+- TrollLibraries.UnitTests
+En este proyecto es dónde vais a hacer las pruebas unitarias de las distintas clases que os pido en los ejercicios.
 
 ### Ejercicio CodeKatasStack
 Este ejercicio consiste en realizar las pertinentes pruebas unitarias a la clase MyStack. ¿Parece fácil verdad? Bueno esta clase es algo especial...
